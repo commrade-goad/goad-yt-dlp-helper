@@ -27,6 +27,6 @@ def main():
             exit()
         os.system("yt-dlp -f "+what+" "+link)
     else :
-        print("yt-dlp is not installed. Please install it first")
+        print("yt-dlp is not installed. Please install it first.")
         exit()
 main()
