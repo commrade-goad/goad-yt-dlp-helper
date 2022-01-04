@@ -27,9 +27,9 @@ def main():
             exit()
         os.system("yt-dlp -f "+what+" "+link)
     else :
-        install=input("yt-dlp is not installed. Do you want to install it? (y/n) :")
+        install=input("yt-dlp is not installed. Do you want to install it? (UNIX Like system only)(y/n) :")
         if install == "y" :
-            print("sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && sudo chmod a+rx /usr/local/bin/yt-dlp")
+            print("sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && sudo chmod a+rx /usr/local/bin/yt-dlp") 
             install=input("you will execute this command, do you want to proceed? (y/n) :")
             if install == "y":
                 os.system("sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && sudo chmod a+rx /usr/local/bin/yt-dlp")
