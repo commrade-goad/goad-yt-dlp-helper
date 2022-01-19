@@ -11,15 +11,15 @@ def main():
         checker2= "exit" in link
         if checker2 == True:
             exit()
-        print("Current Working Directory is",os.getcwd())
+        print("Current Working Directory is",os.getcwd()) # add "#" at the start of the line to disable current working directory"
         where=str(input("Path : "))
         dircheck=os.path.isdir(where)
         if dircheck == False:
             print("Directory '"+where+"' doesn't exist.")
             main()
         os.chdir(where)
-        os.system("yt-dlp -F "+link)
-        print("The file will be saved at",os.getcwd())
+        os.system("yt-dlp -F "+link) # add "#" at the start of the line to disable format printing
+        print("The file will be saved at",os.getcwd()) # add "#" at the start of the line to disable new cwd 
         what=str(input("Select Format (example: 137+140): "))
         os.system("yt-dlp -f "+what+" "+link)
     else:
