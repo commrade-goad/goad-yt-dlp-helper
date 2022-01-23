@@ -13,6 +13,7 @@ def main():
         if checker2 == True:
             exit()
         elif checker3 == True:
+            print(" >> Running Command : yt-dlp -U")
             os.system("sudo yt-dlp -U")
             main()
         print("Current Working Directory is",os.getcwd()) # add "#" at the start of the line to disable current working directory"
