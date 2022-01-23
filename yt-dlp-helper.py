@@ -2,7 +2,7 @@ import os
 print("================================")
 print(" yt-dlp Helper by Goad for Goad ")
 print("================================")
-print("Type 'exit' to exit")
+print("Other options: 'exit' 'update'")
 
 def main():
     check=os.path.isfile("/usr/local/bin/yt-dlp")
@@ -11,6 +11,10 @@ def main():
         checker2= "exit" in link
         if checker2 == True:
             exit()
+        checker2 == "update" in link
+        elif checker2 == True:
+            os.system("sudo yt-dlp -U")
+            main()
         print("Current Working Directory is",os.getcwd()) # add "#" at the start of the line to disable current working directory"
         where=str(input("Path : "))
         dircheck=os.path.isdir(where)
