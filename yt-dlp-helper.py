@@ -9,10 +9,10 @@ def main():
     if check == True:
         link=str(input("Source : "))
         checker2= "exit" in link
+        checker3= "update" in link
         if checker2 == True:
             exit()
-        checker2 == "update" in link
-        elif checker2 == True:
+        elif checker3 == True:
             os.system("sudo yt-dlp -U")
             main()
         print("Current Working Directory is",os.getcwd()) # add "#" at the start of the line to disable current working directory"
