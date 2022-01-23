@@ -1,3 +1,4 @@
+from urllib.parse import urlparse
 import os
 print("================================")
 print(" yt-dlp Helper by Goad for Goad ")
@@ -8,14 +9,21 @@ def main():
     check=os.path.isfile("/usr/local/bin/yt-dlp")
     if check == True:
         link=str(input("Source : "))
-        checker2= "exit" in link
-        checker3= "update" in link
-        if checker2 == True:
+        exitcheck= "exit" in link
+        updatecheck= "update" in link
+        if exitcheck == True:
             exit()
-        elif checker3 == True:
+        elif updatecheck == True:
             print(" >> Running Command : yt-dlp -U")
             os.system("sudo yt-dlp -U")
             main()
+        else:
+            urlcheck = urlparse(link)
+            urlcheckbol = (all([urlcheck.scheme, urlcheck.netloc, urlcheck.path])
+                           and len(urlcheck.netloc.split(".")) > 1)
+            if urlcheckbol == False :
+                print("Not a valid url or commands!")
+                exit()
         print("Current Working Directory is",os.getcwd()) # add "#" at the start of the line to disable current working directory"
         where=str(input("Path : "))
         dircheck=os.path.isdir(where)
@@ -28,7 +36,7 @@ def main():
         what=str(input("Select Format (example: 137+140): "))
         os.system("yt-dlp -f "+what+" "+link)
     else:
-        install=input("yt-dlp is not installed. Do you want to install it? (UNIX Like system only)(y/n) : ")
+        install=input("yt-dlp is not installed. Do you want to install it? (y/n) : ")
         if install == "y":
             print("sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && sudo chmod a+rx /usr/local/bin/yt-dlp") 
             install=input("you will execute the  command from above, do you want to proceed? (y/n) : ")
