@@ -14,7 +14,7 @@ def main():
         if exitcheck == True:
             exit()
         elif updatecheck == True:
-            print(" >> Running Command : yt-dlp -U")
+            print(" >> Running Command : sudo yt-dlp -U")
             os.system("sudo yt-dlp -U")
             main()
         else:
