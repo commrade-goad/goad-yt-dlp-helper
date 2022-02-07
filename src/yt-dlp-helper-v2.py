@@ -96,4 +96,3 @@ def dirPrinting():
     print("Current Working Directory is '",os.getcwd(),"'")
 
 main()
-f.close()
