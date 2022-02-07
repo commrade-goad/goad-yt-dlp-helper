@@ -40,11 +40,9 @@ def readTheConfigFile():
         try:
             listSet.append(reader[2]) # cwd1 = 0, cwd2 = 1, format = 2
         except:
-            print("Error reading config file. Restoring config file...")
-            os.system("rm *.conf")
-            time.sleep(0.4)
-            main()
-
+            print("Error reading config file.")
+            print("Please delete the config file at '~/yt-dlp-helper.conf' and restart the program!")
+            exit()
 def vidSourcenOptions():
     global link
     link=str(input("Source / options : "))
