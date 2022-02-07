@@ -1,6 +1,5 @@
 from urllib.parse import urlparse
 import os
-import time
 print("================================")
 print("   yt-dlp-helper by Goad V2.0   ")
 print("================================")
@@ -13,7 +12,7 @@ def main():
     if check == True:
         checkconf = os.path.isfile(absoluteHomeFolder+"/"+"yt-dlp-helper.conf")
         if checkconf == False:
-            print("Creating config file...")
+            print("Created Config file.")
             f = open(absoluteHomeFolder+"/"+"yt-dlp-helper.conf", "w+")
             f.write("cwd1 = 1\ncwd2 = 1\nformat = 1")
         readTheConfigFile()
@@ -41,8 +40,9 @@ def readTheConfigFile():
             listSet.append(reader[2]) # cwd1 = 0, cwd2 = 1, format = 2
         except:
             print("Error reading config file.")
-            print("Please delete the config file at '~/yt-dlp-helper.conf' and restart the program!")
-            exit()
+            os.remove(absoluteHomeFolder+"/"+"yt-dlp-helper.conf")
+            main()
+
 def vidSourcenOptions():
     global link
     link=str(input("Source / options : "))
