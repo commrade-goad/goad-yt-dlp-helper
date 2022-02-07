@@ -82,7 +82,7 @@ def whereToSave():
 
 def ytdlpCommand():
     if listSet[2] == '1':
-        os.system("yt-dlp -F "+link) # add "#" at the start of the line to disable format printing
+        os.system("yt-dlp -F "+link) 
     else:
         pass
     if listSet[1] == '1':
