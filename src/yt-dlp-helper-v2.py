@@ -47,7 +47,7 @@ def readTheConfigFile():
 
 def vidSourcenOptions():
     global link
-    link=str(input("Source : "))
+    link=str(input("Source / options : "))
     updateOptions = ['update','UPDATE', 'Update']
     exitOptions = ['exit', 'EXIT', 'Exit']
     exitcheck = link in exitOptions
