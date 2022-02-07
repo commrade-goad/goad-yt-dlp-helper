@@ -5,17 +5,18 @@ print("================================")
 print("   yt-dlp-helper by Goad V2.0   ")
 print("================================")
 print("Other options: 'exit' 'update'")
-link = str()
+homefolder = "~"
+absoluteHomeFolder = os.path.expanduser(homefolder)
 
 def main():
     check = os.path.isfile("/usr/local/bin/yt-dlp")
     if check == True:
-        checkconf = os.path.isfile("./yt-dlp-helper.conf")
+        checkconf = os.path.isfile(absoluteHomeFolder+"/"+"yt-dlp-helper.conf")
         if checkconf == False:
             print("Creating config file...")
-            f = open("yt-dlp-helper.conf", "w+")
+            f = open(absoluteHomeFolder+"/"+"yt-dlp-helper.conf", "w+")
             f.write("cwd1 = 1\ncwd2 = 1\nformat = 1")
-            f.close
+        readTheConfigFile()
         vidSourcenOptions()
     else:
         install=input("yt-dlp is not installed. Do you want to install it? (y/n) : ")
@@ -33,7 +34,7 @@ def main():
 def readTheConfigFile():
     global listSet
     listSet = []
-    f = open("yt-dlp-helper.conf", "r")
+    f = open(absoluteHomeFolder+"/"+"yt-dlp-helper.conf", "r")
     for line in f:
         reader = line.split()
         try:
@@ -45,7 +46,6 @@ def readTheConfigFile():
             main()
 
 def vidSourcenOptions():
-    readTheConfigFile()
     global link
     link=str(input("Source : "))
     updateOptions = ['update','UPDATE', 'Update']
@@ -98,3 +98,4 @@ def dirPrinting():
     print("Current Working Directory is '",os.getcwd(),"'")
 
 main()
+f.close()
