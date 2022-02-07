@@ -32,6 +32,7 @@ def main():
 
 def readTheConfigFile():
     global listSet
+    global f
     listSet = []
     f = open(absoluteHomeFolder+"/"+"yt-dlp-helper.conf", "r")
     for line in f:
@@ -96,3 +97,4 @@ def dirPrinting():
     print("Current Working Directory is '",os.getcwd(),"'")
 
 main()
+f.close()
