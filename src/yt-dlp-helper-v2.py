@@ -14,7 +14,7 @@ def main():
         if checkconf == False:
             print("Created Config file.")
             f = open(absoluteHomeFolder+"/"+"yt-dlp-helper.conf", "w+")
-            f.write("cwd1 = 1\ncwd2 = 1\nformat = 1")
+            f.write("cwd1 = 1 \ncwd2 = 1 \nformat = 1 ")
         readTheConfigFile()
         vidSourcenOptions()
     else:
