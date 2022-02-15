@@ -4,8 +4,7 @@ print("================================")
 print("   yt-dlp-helper by Goad V2.0   ")
 print("================================")
 print("Other options: 'exit' 'update'")
-homefolder = "~"
-absoluteHomeFolder = os.path.expanduser(homefolder)
+absoluteHomeFolder = os.path.expanduser("~")
 
 def main():
     check = os.path.isfile("/usr/local/bin/yt-dlp")
@@ -51,25 +50,25 @@ def vidSourcenOptions():
     exitOptions = ['exit', 'EXIT', 'Exit']
     exitcheck = link in exitOptions
     updatecheck = link in updateOptions
-    if exitcheck == True:
-        exit()
-    elif updatecheck == True:
-        print(" >> Running Command : sudo yt-dlp -U")
-        os.system("sudo yt-dlp -U")
-        vidSourcenOptions()
-    else:
-        urlcheck = urlparse(link)
-        urlcheckbol = (all([urlcheck.scheme, urlcheck.netloc, urlcheck.path])
-                        and len(urlcheck.netloc.split(".")) > 1)
-        if urlcheckbol == False :
-            print("Not a valid url or commands!")
+    urlcheck = urlparse(link)
+    urlcheckbol = (all([urlcheck.scheme, urlcheck.netloc, urlcheck.path])
+                    and len(urlcheck.netloc.split(".")) > 1)
+    if urlcheckbol == True:
+        if listSet[0] == '1':
+            dirPrinting()
+            whereToSave()
+        else:
+            whereToSave()
+    else :
+        if exitcheck == True:
+            exit()
+        elif updatecheck == True:
+            print(" >> Running Command : sudo yt-dlp -U")
+            os.system("sudo yt-dlp -U")
             vidSourcenOptions()
         else:
-            if listSet[0] == '0':
-                whereToSave()
-            else:
-                dirPrinting()
-                whereToSave()
+            print("Not a valid url or commands!")
+            vidSourcenOptions()
 
 def whereToSave():
     where=str(input("Path : "))
