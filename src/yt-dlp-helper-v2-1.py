@@ -1,7 +1,7 @@
 from urllib.parse import urlparse
 import os
 print("================================")
-print("   yt-dlp-helper by Goad V2.0   ")
+print("   yt-dlp-helper by Goad V2.1   ")
 print("================================")
 print("Other options: 'exit' 'update'")
 absoluteHomeFolder = os.path.expanduser("~")
