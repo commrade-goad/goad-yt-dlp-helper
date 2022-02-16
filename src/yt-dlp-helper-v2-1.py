@@ -94,6 +94,7 @@ def whereToSave():
     dircheck=os.path.isdir(where)
     if dircheck == False:
         print("Directory '"+where+"' doesn't exist.")
+        print("Maybe this will help :\n", os.listdir())       
         whereToSave()
     else:
         os.chdir(where)
