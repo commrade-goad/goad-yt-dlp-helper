@@ -87,7 +87,6 @@ def vidSourcenOptions():
         urlcheckbolList.append(urlcheckbol)
 
     if False in urlcheckbolList :
-        print(urlcheckbolList)
         exitcheck = link[0] in exitOptions
         updatecheck = link[0] in updateOptions
         if exitcheck == True:
