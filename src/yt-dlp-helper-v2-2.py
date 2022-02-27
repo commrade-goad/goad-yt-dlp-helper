@@ -120,7 +120,7 @@ def ytdlpCommand():
             for i in range(0, count):
                 n = n + 1
                 vidNumber = vidNumber+1
-                print(" > Video no "+vidNumber)
+                print(" > Video no",vidNumber)
                 os.system("yt-dlp -F "+link[n])
         else:
             pass
@@ -135,7 +135,7 @@ def ytdlpCommand():
         vidNumber = 0
         for i in range(0, count):
             vidNumber = vidNumber+1
-            print(" > Video no "+vidNumber)
+            print(" > Video no",vidNumber)
             what=str(input("Select Format (example: 137+140): "))
             formatList.append(what)
         n = -1
@@ -143,7 +143,7 @@ def ytdlpCommand():
         for i in range(0, count):
             n = n + 1
             vidNumber = vidNumber+1
-            print(" > Downloading Video no "+vidNumber)
+            print(" > Downloading Video no",vidNumber)
             os.system("yt-dlp -f "+formatList[n]+" "+link[n])
     else:
         what=str(input("Select Format (example: 137+140): "))
