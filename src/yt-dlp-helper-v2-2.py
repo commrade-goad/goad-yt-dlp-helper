@@ -69,26 +69,31 @@ def vidSourcenOptions():
     updateOptions = ['update','UPDATE', 'Update']
     exitOptions = ['exit', 'EXIT', 'Exit']
     countVid= link.count(";")
-    if ";" in link:
-        link = link.split("; ")
-    else:
-        pass
-    count = countVid + 1
-    n = -1
     urlcheckbolList = []
-    for i in range(0, count):
-        n = n + 1
-        urlcheck = urlparse(link[n])
+    link = link.split("; ")
+    count = countVid + 1
+    if ";" in link:
+        n = -1
+        for i in range(0, count):
+            n = n + 1
+            urlcheck = urlparse(link[n])
+            urlcheckbol = (all([urlcheck.scheme, urlcheck.netloc, urlcheck.path])
+                        and len(urlcheck.netloc.split(".")) > 1)
+            urlcheckbolList.append(urlcheckbol)
+    else:
+        urlcheck = urlparse(link[0])
         urlcheckbol = (all([urlcheck.scheme, urlcheck.netloc, urlcheck.path])
                         and len(urlcheck.netloc.split(".")) > 1)
         urlcheckbolList.append(urlcheckbol)
+
     if False in urlcheckbolList :
-        exitcheck = link in exitOptions
-        updatecheck = link in updateOptions
+        print(urlcheckbolList)
+        exitcheck = link[0] in exitOptions
+        updatecheck = link[0] in updateOptions
         if exitcheck == True:
             exit()
         elif updatecheck == True:
-            print(" >> Running Command : sudo yt-dlp -U")
+            print(" > Running Command : sudo yt-dlp -U")
             os.system("sudo yt-dlp -U")
             vidSourcenOptions()
         else:
@@ -113,6 +118,7 @@ def whereToSave():
         ytdlpCommand()
 
 def ytdlpCommand():
+    formatList=[]
     if formatConf == True:
         if count > 1 :
             n = -1
@@ -123,7 +129,8 @@ def ytdlpCommand():
                 print(" > Video no",vidNumber)
                 os.system("yt-dlp -F "+link[n])
         else:
-            pass
+            print(" > Video no 1")
+            os.system("yt-dlp -F "+link[0])
     else:
         pass
     if cwd2Conf == True:
@@ -131,7 +138,6 @@ def ytdlpCommand():
     else:
         pass
     if count > 1:
-        formatList=[]
         vidNumber = 0
         for i in range(0, count):
             vidNumber = vidNumber+1
@@ -147,7 +153,8 @@ def ytdlpCommand():
             os.system("yt-dlp -f "+formatList[n]+" "+link[n])
     else:
         what=str(input("Select Format (example: 137+140): "))
-        os.system("yt-dlp -f "+what+" "+link)
+        formatList.append(what)
+        os.system("yt-dlp -f "+formatList[0]+" "+link[0])
 
 def dirPrinting():
     print("Current Working Directory is '",os.getcwd(),"'")
