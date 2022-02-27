@@ -68,8 +68,8 @@ def vidSourcenOptions():
     link=str(input("Source / options : "))
     updateOptions = ['update','UPDATE', 'Update']
     exitOptions = ['exit', 'EXIT', 'Exit']
+    countVid= link.count(";")
     if ";" in link:
-        countVid = link.count(";")
         link = link.split("; ")
     else:
         pass
