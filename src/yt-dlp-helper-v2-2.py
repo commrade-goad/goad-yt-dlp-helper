@@ -3,7 +3,7 @@ import os
 print("================================")
 print("   yt-dlp-helper by Goad V2.2   ")
 print("================================")
-print("Other options: 'exit' 'update'")
+print("Other options: 'exit' 'update' 'new'")
 absoluteHomeFolder = os.path.expanduser("~")
 
 def main():
@@ -89,11 +89,15 @@ def vidSourcenOptions():
     if False in urlcheckbolList :
         exitcheck = link[0] in exitOptions
         updatecheck = link[0] in updateOptions
+        newFcheck = "new" in link[0]
         if exitcheck == True:
             exit()
         elif updatecheck == True:
             print(" > Running Command : sudo yt-dlp -U")
             os.system("sudo yt-dlp -U")
+            vidSourcenOptions()
+        elif newFcheck == True:
+            print("New Feature : Now you can download more than one video in one go. Type '; ' at the end of the link and follow by another link.")
             vidSourcenOptions()
         else:
             print("Not a valid url or commands!")
