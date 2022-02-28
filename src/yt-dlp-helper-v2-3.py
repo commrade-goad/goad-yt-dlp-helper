@@ -91,7 +91,7 @@ def vidSourcenOptions():
             os.system("sudo yt-dlp -U")
             vidSourcenOptions()
         elif newFcheck == True:
-            print("New Feature :\n Version 2.2 : Now you can download more than one video in one go. Type '; ' at the end of the link and follow by another link.\n Version 2.3 : Tidy up some of the code and adding download all the same format options.")
+            print("New Feature :\n Version 2.2 : Now you can download more than one video in one go. Type '; ' at the end of the link and follow by another link.\n Version 2.3 : Tidy up some of the code and adding download all the same format options. (use 'sf' flag in the format)")
             vidSourcenOptions()
         else:
             print("Not a valid url or commands!")
@@ -135,12 +135,12 @@ def ytdlpCommand():
     for i in range(0, count):
         vidNumber = vidNumber+1
         print(" > Select Format for Video no",vidNumber)
-        what=str(input("Type 'all' to select the same format for all Videos\nSelect Format (example: 137+140): "))
+        what=str(input("Type 'sf' to select the same format for all Videos\nSelect Format (example: 137+140): "))
         formatList.append(what)
-        if "all" in formatList:
+        if "sf" in formatList[0]:
             if count == 1:
                 sameFormat = False
-                print("You are Downloading only one video no need to use the all flag.")
+                print("You are Downloading only one video no need to use the 'sf' flag.")
                 ytdlpCommand()
             else:
                 sameFormat = True
@@ -164,8 +164,10 @@ def ytdlpCommand():
             print(" > Downloading Video no",vidNumber)
             os.system("yt-dlp -f "+formatList[1]+" "+link[n])
 
-def dirPrinting():
-    print("Current Working Directory is '",os.getcwd(),"'")
-
+def dirPrinting(printType):
+    if printType == 1:
+        print("Current Working Directory is '"+os.getcwd()+"'")
+    else:
+        print("The File will be saved at '"+os.getcwd()+"'")
 main()
 f.close()
