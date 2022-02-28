@@ -98,7 +98,7 @@ def vidSourcenOptions():
             vidSourcenOptions()
     else:
         if cwd1Conf == True:
-            dirPrinting()
+            dirPrinting(1)
             whereToSave()
         else:
             whereToSave()
@@ -114,7 +114,7 @@ def whereToSave():
         os.chdir(where)
         ytdlpCommand()
 
-def ytdlpCommand():
+def ytdlpCommand(): #sf bug is caused because i call the function again.
     sameFormat = False
     formatList=[]
     if formatConf == True:
@@ -128,7 +128,7 @@ def ytdlpCommand():
     else:
         pass
     if cwd2Conf == True:
-        dirPrinting()
+        dirPrinting(2)
     else:
         pass
     vidNumber = 0
@@ -152,17 +152,26 @@ def ytdlpCommand():
     n = -1
     vidNumber = 0
     if sameFormat == False:
-        for i in range(0, count):
-            n = n + 1
+        if count == 1:
             vidNumber = vidNumber+1
             print(" > Downloading Video no",vidNumber)
-            os.system("yt-dlp -f "+formatList[n]+" "+link[n])
+            os.system("yt-dlp -f "+formatList[0]+" "+link[0])
+            exit()
+        else:
+            for i in range(0, count):
+                n = n + 1
+                vidNumber = vidNumber+1
+                print(" > Downloading Video no LMAO",vidNumber)
+                print("yt-dlp -f "+formatList[n]+" "+link[n])
+            exit()
+
     else:
         for i in range(0, count):
             n = n + 1
             vidNumber = vidNumber+1
             print(" > Downloading Video no",vidNumber)
             os.system("yt-dlp -f "+formatList[1]+" "+link[n])
+        exit()
 
 def dirPrinting(printType):
     if printType == 1:
