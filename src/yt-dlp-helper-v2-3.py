@@ -132,10 +132,11 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
     else:
         pass
     vidNumber = 0
+    print("Type 'sf' to select the same format for all Videos")
     for i in range(0, count):
         vidNumber = vidNumber+1
         print(" > Select Format for Video no",vidNumber)
-        what=str(input("Type 'sf' to select the same format for all Videos\nSelect Format (example: 137+140): "))
+        what=str(input("Select Format (example: 137+140): "))
         formatList.append(what)
         if "sf" in formatList[0]:
             if count == 1:
