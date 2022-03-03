@@ -1,7 +1,8 @@
 from urllib.parse import urlparse
 import os
+import subprocess
 print("================================")
-print("   yt-dlp-helper by Goad V2.3   ")
+print("  yt-dlp-helper by Goad V2.3-1  ")
 print("================================")
 print("Other options: 'exit' 'update' 'new'")
 absoluteHomeFolder = os.path.expanduser("~")
@@ -12,7 +13,7 @@ def main():
         checkconf = os.path.isfile(absoluteHomeFolder+"/"+"yt-dlp-helper.conf")
         if checkconf == False:
             f = open(absoluteHomeFolder+"/"+"yt-dlp-helper.conf", "w+")
-            f.write("cwd1 = 1 \ncwd2 = 1 \nformat = 1 ")
+            f.write("cwd1 = 1 \ncwd2 = 1 \nformat = 1 \nformatCheck = 1 ")
             print("Config file created. Please relaunch the script.")
             exit()
         readTheConfigFile()
@@ -34,25 +35,30 @@ def readTheConfigFile():
     global cwd1Conf
     global cwd2Conf
     global formatConf
+    global formatCheckConf
     global f
     n1 = -1
     cwd1Conf = False
     cwd2Conf = False
     formatConf = False
+    formatCheckConf = False
     listSet = []
     varConf = []
     f = open(absoluteHomeFolder+"/"+"yt-dlp-helper.conf", "r")
     for line in f:
         reader = line.split()
         try:
-            listSet.append(reader[2])           # cwd1 = 0, cwd2 = 1, format = 2
+            listSet.append(reader[2])           # cwd1 = 0, cwd2 = 1, format = 2, formatCheckConf = 3
             varConf.append(reader[0])
         except:
             print("Error reading config file. Config file will be rewritten.")
             os.remove(absoluteHomeFolder+"/"+"yt-dlp-helper.conf")
             main()
-
-    for i in range(3):
+    formatCheckConfC = "formatCheck" in varConf
+    if formatCheckConfC == False:
+        print("This new version added new config called 'formatCheck' so please delete the config file at '~/yt-dlp-helper.conf' and restart the script or add 'formatCheck = (0 or 1)' in the config file.\nNote: this format checking will take sometime (more video more longer), so if you dont want to wait just turn off this feature (set to 0).")
+        exit()
+    for i in range(4):
         n1 = n1 + 1
         testVar = varConf[n1]+listSet[n1]
         if testVar == "cwd11":
@@ -61,7 +67,8 @@ def readTheConfigFile():
             cwd2Conf = True
         elif testVar == "format1":
             formatConf = True
-
+        elif testVar == "formatCheck1":
+            formatCheckConf = True
 def vidSourcenOptions():
     global link
     global count
@@ -91,7 +98,7 @@ def vidSourcenOptions():
             os.system("sudo yt-dlp -U")
             vidSourcenOptions()
         elif newFcheck == True:
-            print("New Feature :\n Version 2.2 : Now you can download more than one video in one go. Type '; ' at the end of the link and follow by another link.\n Version 2.3 : Tidy up some of the code and adding download all the same format options. (use 'sf' flag in the format)")
+            print("New Feature :\n Version 2.2 : Now you can download more than one video in one go. Type '; ' at the end of the link and follow by another link.\n Version 2.3 : Tidy up some of the code and adding download all the same format options. (use 'sf' flag in the format) and added format availablity checking (not always work because of some factor.)")
             vidSourcenOptions()
         else:
             print("Not a valid url or commands!")
@@ -104,6 +111,8 @@ def vidSourcenOptions():
             whereToSave()
 
 def whereToSave():
+    global runFormatCheck
+    runFormatCheck=[]
     where=str(input("Path : "))
     dircheck=os.path.isdir(where)
     if dircheck == False:
@@ -112,6 +121,15 @@ def whereToSave():
         whereToSave()
     else:
         os.chdir(where)
+        if formatCheckConf == True:
+            print("Please Wait. Checking Available format...")
+            n = -1
+            for i in range(0, count):
+                queueFormatCheck = subprocess.run(['yt-dlp', '-F', link[n]], stdout=subprocess.PIPE)
+                runFormatCheck.append(queueFormatCheck)
+            print("Done!")
+        else:
+            pass
         ytdlpCommand()
 
 def ytdlpCommand(): #sf bug is caused because i call the function again.
@@ -138,6 +156,11 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
         print(" > Select Format for Video no",vidNumber)
         what=str(input("Select Format (example: 137+140): "))
         formatList.append(what)
+        funcRunFormatCheck(formatList, vidNumber)
+        if notValid == True:
+            ytdlpCommand()
+        else:
+            pass
         if "sf" in formatList[0]:
             if count == 1:
                 sameFormat = False
@@ -147,6 +170,11 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
                 sameFormat = True
                 what=str(input("Select Format for all Videos (example: 137+140): "))
                 formatList.append(what)
+                funcRunFormatCheck(formatList, 1)
+                if notValid == True:
+                    ytdlpCommand()
+                else:
+                    pass
                 break
         else:
             pass
@@ -179,5 +207,14 @@ def dirPrinting(printType):
         print("Current Working Directory is '"+os.getcwd()+"'")
     else:
         print("The File will be saved at '"+os.getcwd()+"'")
+
+def funcRunFormatCheck(formatChoice, videoNo):
+    global notValid
+    notValid = False
+    if formatChoice not in runFormatCheck:
+        notValid = True
+        print("Format", formatChoice,"not available for video", videoNo)
+
+
 main()
 f.close()
