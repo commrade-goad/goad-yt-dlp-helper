@@ -162,7 +162,7 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
             for i in range(0, count):
                 n = n + 1
                 vidNumber = vidNumber+1
-                print(" > Downloading Video no LMAO",vidNumber)
+                print(" > Downloading Video no",vidNumber)
                 print("yt-dlp -f "+formatList[n]+" "+link[n])
             exit()
 
