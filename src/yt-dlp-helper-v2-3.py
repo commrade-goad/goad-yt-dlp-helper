@@ -1,18 +1,18 @@
 from urllib.parse import urlparse
 import os
 print("================================")
-print("   yt-dlp-helper by Goad V2.3   ")
+print("  yt-dlp-helper by Goad V2.3.2  ")
 print("================================")
-print("Other options: 'exit' 'update' 'new'")
+print("Other options: 'exit' 'update' 'new' 'rconf' 'rdown'")
 absoluteHomeFolder = os.path.expanduser("~")
 
 def main():
     check = os.path.isfile("/usr/local/bin/yt-dlp")
     if check == True:
-        checkconf = os.path.isfile(absoluteHomeFolder+"/"+"yt-dlp-helper.conf")
+        checkconf = os.path.isfile(absoluteHomeFolder+"/yt-dlp-helper.conf")
         if checkconf == False:
-            f = open(absoluteHomeFolder+"/"+"yt-dlp-helper.conf", "w+")
-            f.write("cwd1 = 1 \ncwd2 = 1 \nformat = 1 ")
+            f = open(absoluteHomeFolder+"/yt-dlp-helper.conf", "w+")
+            f.write("global cwd1, cwd2, formatp\n###CONFIG START HERE###\ncwd1 = True \ncwd2 = True \nformatp = True ")
             print("Config file created. Please relaunch the script.")
             exit()
         readTheConfigFile()
@@ -31,40 +31,33 @@ def main():
             exit()
 
 def readTheConfigFile():
-    global cwd1Conf
-    global cwd2Conf
-    global formatConf
-    global f
-    n1 = -1
-    cwd1Conf = False
-    cwd2Conf = False
-    formatConf = False
-    listSet = []
-    varConf = []
-    f = open(absoluteHomeFolder+"/"+"yt-dlp-helper.conf", "r")
-    for line in f:
-        reader = line.split()
-        try:
-            listSet.append(reader[2])           # cwd1 = 0, cwd2 = 1, format = 2
-            varConf.append(reader[0])
-        except:
-            print("Error reading config file. Config file will be rewritten.")
-            os.remove(absoluteHomeFolder+"/"+"yt-dlp-helper.conf")
-            main()
-
-    for i in range(3):
-        n1 = n1 + 1
-        testVar = varConf[n1]+listSet[n1]
-        if testVar == "cwd11":
-            cwd1Conf = True
-        elif testVar == "cwd21":
-            cwd2Conf = True
-        elif testVar == "format1":
-            formatConf = True
+    global possiblePattern, cwd1Settings, cwd2Settings, formatpSettings
+    possiblePattern = [True, False]
+    with open(absoluteHomeFolder+"/yt-dlp-helper.conf") as infile:
+        exec(infile.read())
+    cwd1Settings = True
+    cwd2Settings = True
+    formatpSettings = True
+    try:
+        cwd1Settings = cwd1
+        cwd2Settings = cwd2
+        formatpSettings = formatp
+    except:
+        print("Error reading the config file(missing variable). The config file will be deleted.")
+        os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
+        main()
+    if cwd1Settings not in possiblePattern:
+        print("cwd1 possible value is True(1) or False(0) not",cwd1,"\n(!) using the default value (1)")
+        cwd1Settings = True
+    if cwd2Settings not in possiblePattern:
+        print("cwd2 possible value is True(1) or False(0) not",cwd2,"\n(!) using the default value (1)")
+        cwd2Settings = True
+    if formatpSettings not in possiblePattern:
+        print("formatp possible value is True(1) or False(0) not",formatp,"\n(!) using the default value (1)")
+        formatpSettings = True
 
 def vidSourcenOptions():
-    global link
-    global count
+    global link, count
     link=str(input("Source / options : "))
     updateOptions = ['update','UPDATE', 'Update']
     exitOptions = ['exit', 'EXIT', 'Exit']
@@ -74,7 +67,7 @@ def vidSourcenOptions():
     count = countVid + 1
     n = -1
     for i in range(0, count):
-        n = n + 1
+        n += 1
         urlcheck = urlparse(link[n])
         urlcheckbol = (all([urlcheck.scheme, urlcheck.netloc, urlcheck.path])
                         and len(urlcheck.netloc.split(".")) > 1)
@@ -84,6 +77,8 @@ def vidSourcenOptions():
         exitcheck = link[0] in exitOptions
         updatecheck = link[0] in updateOptions
         newFcheck = "new" in link[0]
+        resetConfFile = "rconf" in link[0]
+        reDownytdlp = "rdown" in link[0]
         if exitcheck == True:
             exit()
         elif updatecheck == True:
@@ -91,13 +86,19 @@ def vidSourcenOptions():
             os.system("sudo yt-dlp -U")
             vidSourcenOptions()
         elif newFcheck == True:
-            print("New Feature :\n Version 2.2 : Now you can download more than one video in one go. Type '; ' at the end of the link and follow by another link.\n Version 2.3 : Tidy up some of the code and adding download all the same format options. (use 'sf' flag in the format)")
+            print("New Feature :\n Version 2.2 : Now you can download more than one video in one go. Type '; ' at the end of the link and follow by another link.\n Version 2.3 : Tidy up some of the code and adding download all the same format options. (use 'sf' flag in the format)\n Version 2.3.2 : Rewrited how the config file reading work, a new reset config file option(rconf) and redownload yt-dlp(rdown).")
             vidSourcenOptions()
+        elif resetConfFile == True:
+            os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
+            main()
+        elif reDownytdlp == True :
+            os.system("sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && sudo chmod a+rx /usr/local/bin/yt-dlp")
+            main()
         else:
             print("Not a valid url or commands!")
             vidSourcenOptions()
     else:
-        if cwd1Conf == True:
+        if cwd1Settings == True:
             dirPrinting(1)
             whereToSave()
         else:
@@ -117,17 +118,17 @@ def whereToSave():
 def ytdlpCommand(): #sf bug is caused because i call the function again.
     sameFormat = False
     formatList=[]
-    if formatConf == True:
+    if formatpSettings == True:
         n = -1
         vidNumber = 0
         for i in range(0, count):
-            n = n + 1
+            n += 1
             vidNumber = vidNumber+1
             print(" > Format of Video no",vidNumber)
             os.system("yt-dlp -F "+link[n])
     else:
         pass
-    if cwd2Conf == True:
+    if cwd2Settings == True:
         dirPrinting(2)
     else:
         pass
@@ -160,7 +161,7 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
             exit()
         else:
             for i in range(0, count):
-                n = n + 1
+                n += 1
                 vidNumber = vidNumber+1
                 print(" > Downloading Video no",vidNumber)
                 print("yt-dlp -f "+formatList[n]+" "+link[n])
@@ -168,7 +169,7 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
 
     else:
         for i in range(0, count):
-            n = n + 1
+            n +=1
             vidNumber = vidNumber+1
             print(" > Downloading Video no",vidNumber)
             os.system("yt-dlp -f "+formatList[1]+" "+link[n])
