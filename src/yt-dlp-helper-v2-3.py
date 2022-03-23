@@ -33,8 +33,14 @@ def main():
 def readTheConfigFile():
     global possiblePattern, cwd1Settings, cwd2Settings, formatpSettings
     possiblePattern = [True, False]
-    with open(absoluteHomeFolder+"/yt-dlp-helper.conf") as infile:
-        exec(infile.read())
+    try:
+        with open(absoluteHomeFolder+"/yt-dlp-helper.conf") as infile:
+            exec(infile.read())
+    except:
+        print("Error reading the config file : invalid config.")
+        print("Recreating the config file...")
+        os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
+        main()
     cwd1Settings = True
     cwd2Settings = True
     formatpSettings = True
@@ -43,7 +49,8 @@ def readTheConfigFile():
         cwd2Settings = cwd2
         formatpSettings = formatp
     except:
-        print("Error reading the config file(missing variable). The config file will be deleted.")
+        print("Error reading the config file : missing variable.")
+        print("Recreating the config file...")
         os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
         main()
     if cwd1Settings not in possiblePattern:
