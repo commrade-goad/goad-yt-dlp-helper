@@ -41,9 +41,6 @@ def readTheConfigFile():
         print("Recreating the config file...")
         os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
         main()
-    cwd1Settings = True
-    cwd2Settings = True
-    formatpSettings = True
     try:
         cwd1Settings = cwd1
         cwd2Settings = cwd2
