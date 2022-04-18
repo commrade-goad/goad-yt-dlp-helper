@@ -7,7 +7,12 @@ print("Other options: 'exit' 'update' 'new' 'rconf' 'rdown'")
 absoluteHomeFolder = os.path.expanduser("~")
 
 def main():
-    check = os.path.isfile("/usr/local/bin/yt-dlp")
+    check1 = os.path.isfile("/usr/local/bin/yt-dlp")
+    check2 = os.path.isfile("/usr/bin/yt-dlp")
+    if check1 or check2 == True:
+        check = True
+    else:
+        check = False
     if check == True:
         checkconf = os.path.isfile(absoluteHomeFolder+"/yt-dlp-helper.conf")
         if checkconf == False:
