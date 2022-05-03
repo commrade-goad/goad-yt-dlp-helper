@@ -145,7 +145,7 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
         pass
     ## NEW ##
     if templateReminderSettings == True:
-        print("Template : 'HD1' for 720p, 'HD2' for 1080p")
+        print("Template : 'HD1' for 720p(136+140), 'HD2' for 1080p(137+140)")
     else :
         pass
     #########
