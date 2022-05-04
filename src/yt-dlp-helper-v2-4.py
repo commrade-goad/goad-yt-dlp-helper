@@ -13,7 +13,7 @@ def main():
         checkconf = os.path.isfile(absoluteHomeFolder+"/yt-dlp-helper.conf")
         if checkconf == False:
             f = open(absoluteHomeFolder+"/yt-dlp-helper.conf", "w+")
-            f.write("global cwd1, cwd2, formatp, templateReminder\n###CONFIG START HERE###\ncwd1 = True \ncwd2 = True \nformatp = True \ntemplateReminder = True ")
+            f.write("global cwd1, cwd2, formatp, templateReminder, confDebug\n###CONFIG START HERE###\ncwd1 = True \ncwd2 = True \nformatp = True \ntemplateReminder = True ")
             print("Config file created. Please relaunch the script.")
             exit()
         readTheConfigFile()
@@ -32,7 +32,7 @@ def main():
             exit()
 
 def readTheConfigFile():
-    global possiblePattern, cwd1Settings, cwd2Settings, formatpSettings, templateReminderSettings
+    global possiblePattern, cwd1Settings, cwd2Settings, formatpSettings, templateReminderSettings, confDebugSettings 
     possiblePattern = [True, False]
     try:
         with open(absoluteHomeFolder+"/yt-dlp-helper.conf") as infile:
@@ -42,6 +42,12 @@ def readTheConfigFile():
         print("Recreating the config file...")
         os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
         main()
+    ## NEW ##
+    try:
+        confDebugSettings = confDebug
+    except:
+        confDebugSettings = False
+    #########
     try:
         cwd1Settings = cwd1
         cwd2Settings = cwd2
@@ -64,6 +70,17 @@ def readTheConfigFile():
 
 def vidSourcenOptions():
     global link, count
+    
+    ## NEW ##
+    ## DEBUG ##
+    if confDebugSettings == True:
+        print("DEBUG :")
+        print("cwd1 =",cwd1Settings)
+        print("cwd2 =",cwd2Settings)
+        print("format =",formatpSettings)
+        print("templateReminder =",templateReminderSettings)
+    #########
+
     link=str(input("Source / options : "))
     updateOptions = ['update','UPDATE', 'Update']
     exitOptions = ['exit', 'EXIT', 'Exit']
