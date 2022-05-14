@@ -2,7 +2,7 @@ from urllib.parse import urlparse
 import subprocess
 import os
 print("================================")
-print("   yt-dlp-helper by Goad V2.4   ")
+print("  yt-dlp-helper by Goad V2.4.2  ")
 print("================================")
 print("Other options: 'exit' 'update' 'new' 'rconf' 'rdown'")
 absoluteHomeFolder = os.path.expanduser("~")
@@ -109,7 +109,7 @@ def vidSourcenOptions():
             os.system("sudo yt-dlp -U")
             vidSourcenOptions()
         elif newFcheck == True:
-            print("New Feature :\n Version 2.2 : Now you can download more than one video in one go. Type '; ' at the end of the link and follow by another link.\n Version 2.3 : Tidy up some of the code and adding download all the same format options. (use 'sf' flag in the format)\n Version 2.3.2 : Rewrited how the config file reading work, a new reset config file option(rconf) and redownload yt-dlp(rdown).\n Version 2.4 : Added Template download. Use 'HD1' for 720p and 'HD2' for 1080p video template.")
+            print("New Feature :\n Version 2.2 : Now you can download more than one video in one go. Type '; ' at the end of the link and follow by another link.\n Version 2.3 : Tidy up some of the code and adding download all the same format options. (use 'sf' flag in the format)\n Version 2.3.2 : Rewritten how the config file reading work, a new reset config file option(rconf) and redownload yt-dlp(rdown).\n Version 2.4 : Added Template download. Use 'HD' for 720p and 'FHD' for 1080p video template.")
             vidSourcenOptions()
         elif resetConfFile == True:
             os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
@@ -162,7 +162,7 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
         pass
     ## NEW ##
     if templateReminderSettings == True:
-        print("Template : 'HD1' for 720p(136+140), 'HD2' for 1080p(137+140)")
+        print("Template : 'HD' for 720p(136+140), 'FHD' for 1080p(137+140)")
     else :
         pass
     #########
@@ -192,10 +192,10 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
             vidNumber = vidNumber+1
             print(" > Downloading Video no",vidNumber)
             ## NEW ##
-            if formatList[0] == "HD1":
+            if formatList[0] == "HD":
                 os.system("yt-dlp -f 136+140 "+link[0])
                 exit()
-            elif formatList[0] == "HD2":
+            elif formatList[0] == "FHD":
                 os.system("yt-dlp -f 137+140 "+link[0])
                 exit()
             #########
@@ -208,9 +208,9 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
                 vidNumber = vidNumber+1
                 print(" > Downloading Video no",vidNumber)
                 ## NEW ##
-                if formatList[n] == "HD1":
+                if formatList[n] == "HD":
                     os.system("yt-dlp -f 136+140 "+link[n])
-                elif formatList[n] == "HD2":
+                elif formatList[n] == "FHD":
                     os.system("yt-dlp -f 137+140 "+link[n])
             #########
                 else:
@@ -224,9 +224,9 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
             vidNumber = vidNumber+1
             print(" > Downloading Video no",vidNumber)
             ## NEW ##
-            if formatList[1] == "HD1":
+            if formatList[1] == "HD":
                 os.system("yt-dlp -f 136+140 "+link[n])
-            elif formatList[1] == "HD2":
+            elif formatList[1] == "FHD":
                 os.system("yt-dlp -f 137+140 "+link[n])
             #########
             else:
