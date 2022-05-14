@@ -58,15 +58,19 @@ def readTheConfigFile():
         print("Recreating the config file...")
         os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
         main()
+
     if cwd1Settings not in possiblePattern:
-        print("cwd1 possible value is True(1) or False(0) not",cwd1,"\n(!) using the default value (1)")
+        print("cwd1 possible value is True(1) or False(0) not",cwd1,"using the default value (1)")
         cwd1Settings = True
     if cwd2Settings not in possiblePattern:
-        print("cwd2 possible value is True(1) or False(0) not",cwd2,"\n(!) using the default value (1)")
+        print("cwd2 possible value is True(1) or False(0) not",cwd2,"using the default value (1)")
         cwd2Settings = True
     if formatpSettings not in possiblePattern:
-        print("formatp possible value is True(1) or False(0) not",formatp,"\n(!) using the default value (1)")
+        print("formatp possible value is True(1) or False(0) not",formatp,"using the default value (1)")
         formatpSettings = True
+    if templateReminderSettings not in possiblePattern:
+       print("templateReminder possible value is True(1) or False(0) not",templateReminder,"using the default value (1)")
+       templateReminderSettings = True  
 
 def vidSourcenOptions():
     global link, count
