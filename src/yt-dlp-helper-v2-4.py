@@ -2,7 +2,7 @@ from urllib.parse import urlparse
 import subprocess
 import os
 print("================================")
-print("  yt-dlp-helper by Goad V2.4.2  ")
+print("  yt-dlp-helper by Goad V2.4.3  ")
 print("================================")
 print("Other options: 'exit' 'update' 'new' 'rconf' 'rdown'")
 absoluteHomeFolder = os.path.expanduser("~")
@@ -13,7 +13,7 @@ def main():
         checkconf = os.path.isfile(absoluteHomeFolder+"/yt-dlp-helper.conf")
         if checkconf == False:
             f = open(absoluteHomeFolder+"/yt-dlp-helper.conf", "w+")
-            f.write("global cwd1, cwd2, formatp, templateReminder, confDebug\n###CONFIG START HERE###\ncwd1 = True \ncwd2 = True \nformatp = True \ntemplateReminder = True ")
+            f.write("global cwd1, cwd2, formatp, templateReminder, confDebug, defaultLocation\n###CONFIG START HERE###\ncwd1 = True \ncwd2 = True \nformatp = True \ntemplateReminder = True ")
             print("Config file created. Please relaunch the script.")
             exit()
         readTheConfigFile()
@@ -32,7 +32,7 @@ def main():
             exit()
 
 def readTheConfigFile():
-    global possiblePattern, cwd1Settings, cwd2Settings, formatpSettings, templateReminderSettings, confDebugSettings 
+    global possiblePattern, cwd1Settings, cwd2Settings, formatpSettings, templateReminderSettings, confDebugSettings, defaultLocationSettings, checkDefaultLocation 
     possiblePattern = [True, False]
     try:
         with open(absoluteHomeFolder+"/yt-dlp-helper.conf") as infile:
@@ -44,9 +44,18 @@ def readTheConfigFile():
         main()
     ## NEW ##
     try:
+        # NEW #
+        defaultLocationSettings = defaultLocation
+        checkDefaultLocation = os.path.isdir(defaultLocationSettings)
+        if checkDefaultLocation == False:
+            print("The specified default location doesn't exist.")
+        else:
+            print("The default location loaded sucsessfully.")
+        ##
         confDebugSettings = confDebug
     except:
         confDebugSettings = False
+        checkDefaultLocation = False
     #########
     try:
         cwd1Settings = cwd1
@@ -83,6 +92,9 @@ def vidSourcenOptions():
         print("cwd2 =",cwd2Settings)
         print("format =",formatpSettings)
         print("templateReminder =",templateReminderSettings)
+        print("confDebugSettings =",confDebugSettings)
+        print("defaultLocationSettings =", defaultLocationSettings)
+        print("checkDefaultLocation =",checkDefaultLocation)
     #########
 
     link=str(input("Source / options : "))
@@ -113,7 +125,7 @@ def vidSourcenOptions():
             os.system("sudo yt-dlp -U")
             vidSourcenOptions()
         elif newFcheck == True:
-            print("New Feature :\n Version 2.2 : Now you can download more than one video in one go. Type '; ' at the end of the link and follow by another link.\n Version 2.3 : Tidy up some of the code and adding download all the same format options. (use 'sf' flag in the format)\n Version 2.3.2 : Rewritten how the config file reading work, a new reset config file option(rconf) and redownload yt-dlp(rdown).\n Version 2.4 : Added Template download. Use 'HD' for 720p and 'FHD' for 1080p video template.")
+            print("New Feature :\n Version 2.2 : Now you can download more than one video in one go. Type '; ' at the end of the link and follow by another link.\n Version 2.3 : Tidy up some of the code and adding download all the same format options. (use 'sf' flag in the format)\n Version 2.3.2 : Rewritten how the config file reading work, a new reset config file option(rconf) and redownload yt-dlp(rdown).\n Version 2.4 : Added Template download. Use 'HD' for 720p and 'FHD' for 1080p video template.\n Version 2.4.3 : addded Save to Default location.(add 'defaultLocation' variable followed by string to the location inside the config file. example: defaultLocation='/home/goad/Videos/')")
             vidSourcenOptions()
         elif resetConfFile == True:
             os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
@@ -132,15 +144,20 @@ def vidSourcenOptions():
             whereToSave()
 
 def whereToSave():
-    where=str(input("Path : "))
-    dircheck=os.path.isdir(where)
-    if dircheck == False:
-        print("Directory '"+where+"' doesn't exist.")
-        print("Maybe this will help :\n", os.listdir())
-        whereToSave()
+    if checkDefaultLocation == False:
+        where=str(input("Path : "))
+        dircheck=os.path.isdir(where)
+        if dircheck == False:
+            print("Directory '"+where+"' doesn't exist.")
+            print("Maybe this will help :\n", os.listdir())
+            whereToSave()
+        else:
+            os.chdir(where)
+            ytdlpCommand()
     else:
-        os.chdir(where)
+        os.chdir(defaultLocationSettings)
         ytdlpCommand()
+
 
 def ytdlpCommand(): #sf bug is caused because i call the function again.
     sameFormat = False
@@ -239,9 +256,11 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
 
 def dirPrinting(printType):
     if printType == 1:
-        print("Current Working Directory is '"+os.getcwd()+"'")
+        if checkDefaultLocation == True:
+            print("Current Working Directory is '"+defaultLocationSettings+"'")
+        else:
+            print("Current Working Directory is '"+os.getcwd()+"'")
     else:
         print("The File will be saved at '"+os.getcwd()+"'")
 
 main()
-f.close()
