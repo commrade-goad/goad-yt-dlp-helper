@@ -4,7 +4,7 @@ import os
 print("================================")
 print("  yt-dlp-helper by Goad V2.4.3  ")
 print("================================")
-print("Other options: 'exit' 'update' 'new' 'rconf' 'rdown'")
+print("Options: 'exit' 'update' 'new' 'rconf' 'rdown' 'md'")
 absoluteHomeFolder = os.path.expanduser("~")
 
 def main():
@@ -13,7 +13,7 @@ def main():
         checkconf = os.path.isfile(absoluteHomeFolder+"/yt-dlp-helper.conf")
         if checkconf == False:
             f = open(absoluteHomeFolder+"/yt-dlp-helper.conf", "w+")
-            f.write("global cwd1, cwd2, formatp, templateReminder, confDebug, defaultLocation\n###CONFIG START HERE###\ncwd1 = True \ncwd2 = True \nformatp = True \ntemplateReminder = True ")
+            f.write("global cwd1, cwd2, formatp, templateReminder, confDebug, defaultLocation\n###CONFIG START HERE###\ncwd1 = True \ncwd2 = True \nformatp = True \ntemplateReminder = True \nconfDebug = False \ndefaultLocation = 'None' ")
             print("Config file created. Please relaunch the script.")
             exit()
         readTheConfigFile()
@@ -32,7 +32,7 @@ def main():
             exit()
 
 def readTheConfigFile():
-    global possiblePattern, cwd1Settings, cwd2Settings, formatpSettings, templateReminderSettings, confDebugSettings, defaultLocationSettings, checkDefaultLocation 
+    global possiblePattern, cwd1Settings, cwd2Settings, formatpSettings, templateReminderSettings, confDebugSettings, defaultLocationSettings, checkDefaultLocation
     possiblePattern = [True, False]
     try:
         with open(absoluteHomeFolder+"/yt-dlp-helper.conf") as infile:
@@ -42,21 +42,36 @@ def readTheConfigFile():
         print("Recreating the config file...")
         os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
         main()
-    ## NEW ##
+
+    ## debug ##
     try:
-        # NEW #
-        defaultLocationSettings = defaultLocation
-        checkDefaultLocation = os.path.isdir(defaultLocationSettings)
-        if checkDefaultLocation == False:
-            print("The specified default location doesn't exist.")
-        else:
-            print("The default location loaded sucsessfully.")
-        ##
         confDebugSettings = confDebug
     except:
         confDebugSettings = False
-        checkDefaultLocation = False
-    #########
+
+    ## default location ##
+    defaultLocationSettings = "None"
+    checkDefaultLocation = False
+    try:
+        defaultLocationSettings = defaultLocation
+        stringCheck = isinstance(defaultLocationSettings, str) # <-- check if string
+        if stringCheck == True:
+            if defaultLocationSettings != 'None':
+                checkDefaultLocation = os.path.isdir(defaultLocationSettings)
+                if checkDefaultLocation == False:
+                    print("The specified default location '"+defaultLocationSettings+"' doesn't exist.")
+                else:
+                    print("The default location loaded sucsessfully.")
+            elif defaultLocationSettings == 'None':
+                checkDefaultLocation = False
+        else:
+            print("defaultLocation possible value is a string not",templateReminder,". Using manual mode...")
+    except:
+        print("Error reading the config file : missing defaultLocation variable.")
+        print("Possible fix (1): at 'source/options' do 'rconf' options and restart the script")
+        print("using manual mode...")
+
+    ## general ##
     try:
         cwd1Settings = cwd1
         cwd2Settings = cwd2
@@ -82,19 +97,23 @@ def readTheConfigFile():
        templateReminderSettings = True  
 
 def vidSourcenOptions():
-    global link, count
+    global link, count, checkDefaultLocation
     
     ## NEW ##
     ## DEBUG ##
     if confDebugSettings == True:
-        print("DEBUG :")
-        print("cwd1 =",cwd1Settings)
-        print("cwd2 =",cwd2Settings)
-        print("format =",formatpSettings)
-        print("templateReminder =",templateReminderSettings)
-        print("confDebugSettings =",confDebugSettings)
-        print("defaultLocationSettings =", defaultLocationSettings)
-        print("checkDefaultLocation =",checkDefaultLocation)
+        try:
+            print("DEBUG :")
+            print("cwd1 =",cwd1Settings)
+            print("cwd2 =",cwd2Settings)
+            print("format =",formatpSettings)
+            print("templateReminder =",templateReminderSettings)
+            print("confDebugSettings =",confDebugSettings)
+            print("defaultLocationSettings =", defaultLocationSettings)
+            print("checkDefaultLocation =",checkDefaultLocation)
+        except:
+            print("Error reading the config file. Uncomment this line and try running the script again.(placebo)")
+            print("Note : if some var not defined inside the config file with debug on, this massage will came out.")
     #########
 
     link=str(input("Source / options : "))
@@ -118,6 +137,7 @@ def vidSourcenOptions():
         newFcheck = "new" in link[0]
         resetConfFile = "rconf" in link[0]
         reDownytdlp = "rdown" in link[0]
+        manualDir = "md" in link[0]
         if exitcheck == True:
             exit()
         elif updatecheck == True:
@@ -125,7 +145,7 @@ def vidSourcenOptions():
             os.system("sudo yt-dlp -U")
             vidSourcenOptions()
         elif newFcheck == True:
-            print("New Feature :\n Version 2.2 : Now you can download more than one video in one go. Type '; ' at the end of the link and follow by another link.\n Version 2.3 : Tidy up some of the code and adding download all the same format options. (use 'sf' flag in the format)\n Version 2.3.2 : Rewritten how the config file reading work, a new reset config file option(rconf) and redownload yt-dlp(rdown).\n Version 2.4 : Added Template download. Use 'HD' for 720p and 'FHD' for 1080p video template.\n Version 2.4.3 : addded Save to Default location.(add 'defaultLocation' variable followed by string to the location inside the config file. example: defaultLocation='/home/goad/Videos/')")
+            print("New Feature :\n Version 2.2 : Now you can download more than one video in one go. Type '; ' at the end of the link and follow by another link.\n Version 2.3 : Tidy up some of the code and adding download all the same format options. (use 'sf' flag in the format)\n Version 2.3.2 : Rewritten how the config file reading work, a new reset config file option(rconf) and redownload yt-dlp(rdown).\n Version 2.4 : Added Template download. Use 'HD' for 720p and 'FHD' for 1080p video template.\n Version 2.4.3 : addded Save to Default location.(change 'defaultLocation' variable from 'None' to the location default location. example: defaultLocation='/home/goad/Videos/') (You can turn in off by using 'md')")
             vidSourcenOptions()
         elif resetConfFile == True:
             os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
@@ -133,6 +153,10 @@ def vidSourcenOptions():
         elif reDownytdlp == True :
             os.system("sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && sudo chmod a+rx /usr/local/bin/yt-dlp")
             main()
+        elif manualDir == True:
+            checkDefaultLocation = False
+            print("Changed to manual directory.")
+            vidSourcenOptions()
         else:
             print("Not a valid url or commands!")
             vidSourcenOptions()
