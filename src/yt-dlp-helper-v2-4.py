@@ -12,8 +12,8 @@ def main():
     if check == True:
         checkconf = os.path.isfile(absoluteHomeFolder+"/yt-dlp-helper.conf")
         if checkconf == False:
-            f = open(absoluteHomeFolder+"/yt-dlp-helper.conf", "w+")
-            f.write("global cwd1, cwd2, formatp, templateReminder, confDebug, defaultLocation\n###CONFIG START HERE###\ncwd1 = True \ncwd2 = True \nformatp = True \ntemplateReminder = True \nconfDebug = False \ndefaultLocation = 'None' ")
+            with open(absoluteHomeFolder+"/yt-dlp-helper.conf", "w+") as infile:
+                infile.write("global cwd1, cwd2, formatp, templateReminder, confDebug, defaultLocation\n###CONFIG START HERE###\ncwd1 = True \ncwd2 = True \nformatp = True \ntemplateReminder = True \nconfDebug = False \ndefaultLocation = 'None' ")
             print("Config file created. Please relaunch the script.")
             exit()
         readTheConfigFile()
@@ -109,10 +109,10 @@ def vidSourcenOptions():
             print("format =",formatpSettings)
             print("templateReminder =",templateReminderSettings)
             print("confDebugSettings =",confDebugSettings)
-            print("defaultLocationSettings =", defaultLocationSettings)
+            print("defaultLocationSettings = '"+defaultLocationSettings+"'")
             print("checkDefaultLocation =",checkDefaultLocation)
         except:
-            print("Error reading the config file. Uncomment this line and try running the script again.(placebo)")
+            print("Error reading the config file.")
             print("Note : if some var not defined inside the config file with debug on, this massage will came out.")
     #########
 
