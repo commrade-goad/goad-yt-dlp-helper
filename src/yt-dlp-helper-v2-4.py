@@ -13,7 +13,7 @@ def main():
         checkconf = os.path.isfile(absoluteHomeFolder+"/yt-dlp-helper.conf")
         if checkconf == False:
             with open(absoluteHomeFolder+"/yt-dlp-helper.conf", "w+") as infile:
-                infile.write("global cwd1, cwd2, formatp, templateReminder, confDebug, defaultLocation\n###CONFIG START HERE###\ncwd1 = True \ncwd2 = True \nformatp = True \ntemplateReminder = True \nconfDebug = False \ndefaultLocation = 'None' ")
+                infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation\n###CONFIG START HERE###\ncwd1 = True \ncwd2 = True \nformatp = True \nconfDebug = False \ndefaultLocation = 'None' ")
             print("Config file created. Please relaunch the script.")
             exit()
         readTheConfigFile()
@@ -32,7 +32,7 @@ def main():
             exit()
 
 def readTheConfigFile():
-    global possiblePattern, cwd1Settings, cwd2Settings, formatpSettings, templateReminderSettings, confDebugSettings, defaultLocationSettings, checkDefaultLocation
+    global possiblePattern, cwd1Settings, cwd2Settings, formatpSettings, confDebugSettings, defaultLocationSettings, checkDefaultLocation
     possiblePattern = [True, False]
     try:
         with open(absoluteHomeFolder+"/yt-dlp-helper.conf") as infile:
@@ -60,12 +60,10 @@ def readTheConfigFile():
                 checkDefaultLocation = os.path.isdir(defaultLocationSettings)
                 if checkDefaultLocation == False:
                     print("The specified default location '"+defaultLocationSettings+"' doesn't exist.")
-                else:
-                    print("The default location loaded sucsessfully.")
             elif defaultLocationSettings == 'None':
                 checkDefaultLocation = False
         else:
-            print("defaultLocation possible value is a string not",templateReminder,". Using manual mode...")
+            print("defaultLocation possible value is a string not",defaultLocation,". Using manual mode...")
     except:
         print("Error reading the config file : missing defaultLocation variable.")
         print("Possible fix (1): at 'source/options' do 'rconf' options and restart the script")
@@ -76,7 +74,6 @@ def readTheConfigFile():
         cwd1Settings = cwd1
         cwd2Settings = cwd2
         formatpSettings = formatp
-        templateReminderSettings = templateReminder
     except:
         print("Error reading the config file : missing variable. (or updating to the new config.)")
         print("Recreating the config file...")
@@ -92,9 +89,6 @@ def readTheConfigFile():
     if formatpSettings not in possiblePattern:
         print("formatp possible value is True(1) or False(0) not",formatp,"using the default value (1)")
         formatpSettings = True
-    if templateReminderSettings not in possiblePattern:
-       print("templateReminder possible value is True(1) or False(0) not",templateReminder,"using the default value (1)")
-       templateReminderSettings = True  
 
 def vidSourcenOptions():
     global link, count, checkDefaultLocation
@@ -103,14 +97,15 @@ def vidSourcenOptions():
     ## DEBUG ##
     if confDebugSettings == True:
         try:
-            print("DEBUG :")
+            print("==DEBUG======================================")
             print("cwd1 =",cwd1Settings)
             print("cwd2 =",cwd2Settings)
             print("format =",formatpSettings)
-            print("templateReminder =",templateReminderSettings)
             print("confDebugSettings =",confDebugSettings)
             print("defaultLocationSettings = '"+defaultLocationSettings+"'")
             print("checkDefaultLocation =",checkDefaultLocation)
+            print("NOTE : template reminder variable is deleted")
+            print("==============================================")
         except:
             print("Error reading the config file.")
             print("Note : if some var not defined inside the config file with debug on, this massage will came out.")
@@ -145,7 +140,7 @@ def vidSourcenOptions():
             os.system("sudo yt-dlp -U")
             vidSourcenOptions()
         elif newFcheck == True:
-            print("New Feature :\n Version 2.2 : Now you can download more than one video in one go. Type '; ' at the end of the link and follow by another link.\n Version 2.3 : Tidy up some of the code and adding download all the same format options. (use 'sf' flag in the format)\n Version 2.3.2 : Rewritten how the config file reading work, a new reset config file option(rconf) and redownload yt-dlp(rdown).\n Version 2.4 : Added Template download. Use 'HD' for 720p and 'FHD' for 1080p video template.\n Version 2.4.3 : addded Save to Default location.(change 'defaultLocation' variable from 'None' to the location default location. example: defaultLocation='/home/goad/Videos/') (You can turn in off by using 'md')")
+            print("New Feature :\n Version 2.2 : Now you can download more than one video in one go. Type '; ' at the end of the link and follow by another link.\n Version 2.3 : Tidy up some of the code and adding download all the same format options. (use 'sf' flag in the format)\n Version 2.3.2 : Rewritten how the config file reading work, a new reset config file option(rconf) and redownload yt-dlp(rdown).\n Version 2.4 : Added preset download. Use 'HD' for 720p and 'FHD' for 1080p video preset.\n Version 2.4.3 : addded Save to Default location.(change 'defaultLocation' variable from 'None' to the location default location. example: defaultLocation='/home/goad/Videos/') (You can turn in off by using 'md') and deleted presetReminderSettings")
             vidSourcenOptions()
         elif resetConfFile == True:
             os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
@@ -154,9 +149,13 @@ def vidSourcenOptions():
             os.system("sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && sudo chmod a+rx /usr/local/bin/yt-dlp")
             main()
         elif manualDir == True:
-            checkDefaultLocation = False
-            print("Changed to manual directory.")
-            vidSourcenOptions()
+            if checkDefaultLocation == False:
+                print("Already using manual directory!")
+                vidSourcenOptions()
+            else:
+                checkDefaultLocation = False
+                print("Changed to manual directory.")
+                vidSourcenOptions()
         else:
             print("Not a valid url or commands!")
             vidSourcenOptions()
@@ -206,10 +205,7 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
     else:
         pass
     ## NEW ##
-    if templateReminderSettings == True:
-        print("Template : 'HD' for 720p(136+140), 'FHD' for 1080p(137+140)")
-    else :
-        pass
+    print("Template : 'HD' for 720p(136+140), 'FHD' for 1080p(137+140)")
     #########
     for i in range(0, count):
         vidNumber = vidNumber+1
