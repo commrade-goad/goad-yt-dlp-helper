@@ -2,15 +2,21 @@ from urllib.parse import urlparse
 import subprocess
 import os
 print("================================")
-print("  yt-dlp-helper by Goad V2.4.3  ")
+print("  yt-dlp-helper by Goad V2.4.4  ")
 print("================================")
 print("Options: 'exit' 'update' 'new' 'rconf' 'rdown' 'md'")
 absoluteHomeFolder = os.path.expanduser("~")
 
 def main():
-    check = os.path.isfile("/usr/local/bin/yt-dlp")
-    if check == True:
+    check1 = os.path.isfile("/usr/local/bin/yt-dlp")
+    check2 = os.path.isfile("/usr/bin/yt-dlp")
+    if check1 or check2 == True:
+        check = True
         checkconf = os.path.isfile(absoluteHomeFolder+"/yt-dlp-helper.conf")
+    else:
+        check = False
+
+    if check == True:
         if checkconf == False:
             with open(absoluteHomeFolder+"/yt-dlp-helper.conf", "w+") as infile:
                 infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation\n###CONFIG START HERE###\ncwd1 = True \ncwd2 = True \nformatp = True \nconfDebug = False \ndefaultLocation = 'None' ")
@@ -205,7 +211,7 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
     else:
         pass
     ## NEW ##
-    print("Template : 'HD' for 720p(136+140), 'FHD' for 1080p(137+140)")
+    print("Preset : 'HD' for 720p(136+140), 'FHD' for 1080p(137+140)")
     #########
     for i in range(0, count):
         vidNumber = vidNumber+1
