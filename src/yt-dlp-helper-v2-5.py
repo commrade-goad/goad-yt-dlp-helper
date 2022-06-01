@@ -2,7 +2,7 @@ from urllib.parse import urlparse
 import subprocess
 import os
 print("================================")
-print("   yt-dlp-helper by Goad V2.5   ")
+print("  yt-dlp-helper by Goad V2.5.1  ")
 print("================================")
 print("Options: 'exit' 'update' 'new' 'rconf' 'rdown' 'md'")
 absoluteHomeFolder = os.path.expanduser("~")
@@ -22,6 +22,7 @@ def main():
         readTheConfigFile()
         vidSourcenOptions()
     else:
+        print("You may install it from your distro packages manager too.")
         install=input("yt-dlp is not installed. Do you want to install it? (y/n) : ")
         if install == "y":
             print("sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && sudo chmod a+rx /usr/local/bin/yt-dlp")
@@ -37,7 +38,7 @@ def main():
 def readTheConfigFile():
     global possiblePattern, cwd1Settings, cwd2Settings, formatpSettings, confDebugSettings, defaultLocationSettings, checkDefaultLocation, versionInfo
     possiblePattern = [True, False]
-    
+
     try:
         with open(absoluteHomeFolder+"/yt-dlp-helper.conf") as infile:
             exec(infile.read())
@@ -103,7 +104,7 @@ def readTheConfigFile():
 
 def vidSourcenOptions():
     global link, count, checkDefaultLocation
-    
+
     ## NEW ##
     ## DEBUG ##
     if confDebugSettings == True:
@@ -116,7 +117,6 @@ def vidSourcenOptions():
             print("confDebugSettings =",confDebugSettings)
             print("defaultLocationSettings = '"+defaultLocationSettings+"'")
             print("checkDefaultLocation =",checkDefaultLocation)
-            print("NOTE : template reminder variable is deleted")
             print("==============================================")
         except:
             print("Error reading the config file.")
@@ -152,7 +152,8 @@ def vidSourcenOptions():
             os.system("sudo yt-dlp -U")
             vidSourcenOptions()
         elif newFcheck == True:
-            print("New Feature :\n Version 2.2 : Now you can download more than one video in one go. Type '; ' at the end of the link and follow by another link.\n Version 2.3 : Tidy up some of the code and adding download all the same format options. (use 'sf' flag in the format)\n Version 2.3.2 : Rewritten how the config file reading work, a new reset config file option(rconf) and redownload yt-dlp(rdown).\n Version 2.4 : Added preset download. Use 'HD' for 720p and 'FHD' for 1080p video preset.\n Version 2.4.3 : addded Save to Default location.(change 'defaultLocation' variable from 'None' to the location default location. example: defaultLocation='/home/goad/Videos/') (You can turn in off by using 'md') and deleted presetReminderSettings")
+            print("Version :",versionInfo)
+            print("New Custom configuration (no need to change it manually at your home folder.)")
             vidSourcenOptions()
         elif resetConfFile == True:
             os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
@@ -303,58 +304,55 @@ def dirPrinting(printType):
 def createConfig():
     print(" > Configure Configuration file")
     yes=["Y", "y"]
+    no=["n", "N"]
     usrInput = input("Do you want to use the default settings (y/n): ")
     if usrInput in yes:
         with open(absoluteHomeFolder+"/yt-dlp-helper.conf", "w+") as infile:
-            infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation, version\n###CONFIG START HERE###\nversion = 2.5\ncwd1 = True \ncwd2 = True \nformatp = True \nconfDebug = False \ndefaultLocation = 'None' ")
+            infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation, version\n###CONFIG START HERE###\nversion = '2.5.1'\ncwd1 = True \ncwd2 = True \nformatp = True \nconfDebug = False \ndefaultLocation = 'None' ")
         print("Config file created. Please relaunch the script.")
         exit()
     else:
         with open(absoluteHomeFolder+"/yt-dlp-helper.conf", "w+") as infile:
-            infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation, version\n###CONFIG START HERE###\nversion = 2.5\n")
-        print("Do you want to enable current working directory printing?")
-        option1=input("(y/n) : ")
-        if option1 in yes:
-            with open(absoluteHomeFolder+"/yt-dlp-helper.conf", "a+") as infile:
+            infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation, version\n###CONFIG START HERE###\nversion = '2.5.1'\n")
+            print("Do you want to enable current working directory printing?")
+            option1=input("(y/n) : ")
+            if option1 in yes:
                 infile.write("cwd1 = True\n")
-        else:
-            with open(absoluteHomeFolder+"/yt-dlp-helper.conf", "a+") as infile:
+            elif option1 in no:
                 infile.write("cwd1 = False\n")
-        print("cwd1 configured.")
+            else:
+                infile.write("cwd1 = True\n")
+            print("cwd1 configured.")
 
-        print("Do you want to enable second current working directory printing?")
-        option2=input("(y/n) : ")
-        if option2 in yes:
-            with open(absoluteHomeFolder+"/yt-dlp-helper.conf", "a+") as infile:
+            print("Do you want to enable second current working directory printing?")
+            option2=input("(y/n) : ")
+            if option2 in yes:
                 infile.write("cwd2 = True\n")
-        else:
-            with open(absoluteHomeFolder+"/yt-dlp-helper.conf", "a+") as infile:
+            elif option2 in no:
                 infile.write("cwd2 = False\n")
-        print("cwd2 configured.")
+            else:
+                infile.write("cwd2 = True\n")
+            print("cwd2 configured.")
 
-        print("Do you want to enable format printing?")
-        option3=input("(y/n) : ")
-        if option3 in yes:
-            with open(absoluteHomeFolder+"/yt-dlp-helper.conf", "a+") as infile:
+            print("Do you want to enable format printing?")
+            option3=input("(y/n) : ")
+            if option3 in yes:
                 infile.write("formatp = True\n")
-        else:
-            with open(absoluteHomeFolder+"/yt-dlp-helper.conf", "a+") as infile:
+            elif option3 in no:
                 infile.write("formatp = False\n")
-        print("formatp configured.")
+            else:
+                infile.write("formatp = True\n")
+            print("formatp configured.")
 
-        print("Do you want to enable default location?")
-        option4=input("(y/n) : ")
-        if option4 in yes:
-            option5 = input("Type the default save location here : ")
-            with open(absoluteHomeFolder+"/yt-dlp-helper.conf", "a+") as infile:
+            print("Do you want to enable default location?")
+            option4=input("(y/n) : ")
+            if option4 in yes:
+                option5 = input("Type the default save location here : ")
                 infile.write("defaultLocation = '"+option5+"'\n")
-        else:
-            with open(absoluteHomeFolder+"/yt-dlp-helper.conf", "a+") as infile:
+            else:
                 infile.write("defaultLocation = 'None'\n")
-        print("defaultLocation configured.")
-
-        with open(absoluteHomeFolder+"/yt-dlp-helper.conf", "a+") as infile:
-                infile.write("confDebug = False")
+            print("defaultLocation configured.")
+            infile.write("confDebug = False")
         print("Done Creating configuration file. Please restart the script.")
         exit()
 
