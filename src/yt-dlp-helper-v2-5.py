@@ -50,7 +50,7 @@ def readTheConfigFile():
     ## VERSION ##
     try:
         versionInfo = version
-        if versionInfo < 2.5:
+        if versionInfo < 2.51:
             print("You are using the old config file '",versionInfo,"'. Please update the config file using 'rconf' option.")
     except:
         versionInfo = "Unknown"
@@ -308,12 +308,12 @@ def createConfig():
     usrInput = input("Do you want to use the default settings (y/n): ")
     if usrInput in yes:
         with open(absoluteHomeFolder+"/yt-dlp-helper.conf", "w+") as infile:
-            infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation, version\n###CONFIG START HERE###\nversion = '2.5.1'\ncwd1 = True \ncwd2 = True \nformatp = True \nconfDebug = False \ndefaultLocation = 'None' ")
+            infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation, version\n###CONFIG START HERE###\nversion = 2.51\ncwd1 = True \ncwd2 = True \nformatp = True \nconfDebug = False \ndefaultLocation = 'None' ")
         print("Config file created. Please relaunch the script.")
         exit()
     else:
         with open(absoluteHomeFolder+"/yt-dlp-helper.conf", "w+") as infile:
-            infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation, version\n###CONFIG START HERE###\nversion = '2.5.1'\n")
+            infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation, version\n###CONFIG START HERE###\nversion = 2.51\n")
             print("Do you want to enable current working directory printing?")
             option1=input("(y/n) : ")
             if option1 in yes:
