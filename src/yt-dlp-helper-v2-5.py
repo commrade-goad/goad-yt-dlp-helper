@@ -44,9 +44,13 @@ def readTheConfigFile():
             exec(infile.read())
     except:
         print("Error reading the config file : invalid config.")
-        print("Recreating the config file...")
-        os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
-        main()
+        askUser = input("Do you want to recreate the config file? (y/n) : ")
+        if askUser == "y":
+            print("Recreating the config file...")
+            os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
+            main()
+        else:
+            exit()
     ## VERSION ##
     try:
         versionInfo = version
@@ -87,10 +91,14 @@ def readTheConfigFile():
         cwd2Settings = cwd2
         formatpSettings = formatp
     except:
-        print("Error reading the config file : missing variable. (or updating to the new config.)")
-        print("Recreating the config file...")
-        os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
-        main()
+        print("Error reading the config file : missing variable.")
+        askUser = input("Do you want to recreate the config file? (y/n) : ")
+        if askUser == "y":
+            print("Recreating the config file...")
+            os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
+            main()
+        else:
+            exit()
 
     if cwd1Settings not in possiblePattern:
         print("cwd1 possible value is True(1) or False(0) not",cwd1,"using the default value (1)")
@@ -247,14 +255,13 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
             ## NEW ##
             if formatList[0] == "HD":
                 os.system("yt-dlp -f 136+140 "+link[0])
-                exit()
             elif formatList[0] == "FHD":
                 os.system("yt-dlp -f 137+140 "+link[0])
-                exit()
             elif formatList[0] == "small":
                 os.system("yt-dlp -f 135+140 "+link[0])
             #########
-            os.system("yt-dlp -f "+formatList[0]+" "+link[0])
+            else:
+                os.system("yt-dlp -f "+formatList[0]+" "+link[0])
             exit()
         else:
             # MORE THAN ONE VIDEOS DOWNLOADS
