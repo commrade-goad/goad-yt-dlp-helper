@@ -8,7 +8,6 @@ print("Options: 'exit' 'update' 'new' 'rconf' 'rdown' 'md'")
 absoluteHomeFolder = os.path.expanduser("~")
 
 def main():
-    global checkconf
     check1 = os.path.isfile("/usr/local/bin/yt-dlp")
     check2 = os.path.isfile("/usr/bin/yt-dlp")
     if check1 or check2 == True:
