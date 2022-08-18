@@ -8,6 +8,7 @@ print("Options: 'exit' 'update' 'new' 'rconf' 'rdown' 'md'")
 absoluteHomeFolder = os.path.expanduser("~")
 
 def main():
+    global checkconf
     check1 = os.path.isfile("/usr/local/bin/yt-dlp")
     check2 = os.path.isfile("/usr/bin/yt-dlp")
     if check1 or check2 == True:
@@ -164,7 +165,15 @@ def vidSourcenOptions():
             print("New Custom configuration (no need to change it manually at your home folder.)")
             vidSourcenOptions()
         elif resetConfFile == True:
-            os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
+            if checkconf == True:
+                usrInput="None"
+                usrInput=input("are you sure? (y/n) : ")
+                if usrInput == "y":
+                    os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
+                else:
+                    exit()
+            else:
+                os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
             main()
         elif reDownytdlp == True :
             os.system("sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && sudo chmod a+rx /usr/local/bin/yt-dlp")
