@@ -2,7 +2,7 @@ from urllib.parse import urlparse
 import subprocess
 import os
 print("================================")
-print("  yt-dlp-helper by Goad V2.5.1  ")
+print("  yt-dlp-helper by Goad V2.5.2  ")
 print("================================")
 print("Options: 'exit' 'update' 'new' 'rconf' 'rdown' 'md'")
 absoluteHomeFolder = os.path.expanduser("~")
@@ -36,7 +36,7 @@ def main():
             exit()
 
 def readTheConfigFile():
-    global possiblePattern, cwd1Settings, cwd2Settings, formatpSettings, confDebugSettings, defaultLocationSettings, checkDefaultLocation, versionInfo
+    global possiblePattern, cwd1Settings, cwd2Settings, formatpSettings, confDebugSettings, defaultLocationSettings, checkDefaultLocation, versionInfo, askExitSettings
     possiblePattern = [True, False]
 
     try:
@@ -54,7 +54,7 @@ def readTheConfigFile():
     ## VERSION ##
     try:
         versionInfo = version
-        if versionInfo < 2.51:
+        if versionInfo < 2.52:
             print("You are using the old config file '",versionInfo,"'. Please update the config file using 'rconf' option.")
     except:
         versionInfo = "Unknown"
@@ -84,6 +84,18 @@ def readTheConfigFile():
         print("Error reading the config file : missing defaultLocation variable.")
         print("Possible fix (1): at 'source/options' do 'rconf' options and restart the script")
         print("using manual mode...")
+
+    # askExit #
+    try:
+        askExitSettings = askExit
+    except:
+        print("WARING : Missing askExit variable. using the default value...")
+        askExitSettings = 1
+    if askExitSettings not in possiblePattern:
+        print("askExit possible value is True(1) or False(0) not", askExit,"using the default value (1)")
+        askExitSettings = 1
+    else:
+        pass
 
     ## general ##
     try:
@@ -125,6 +137,7 @@ def vidSourcenOptions():
             print("confDebugSettings =",confDebugSettings)
             print("defaultLocationSettings = '"+defaultLocationSettings+"'")
             print("checkDefaultLocation =",checkDefaultLocation)
+            print("askExitSettigns =", askExitSettings)
             print("==============================================")
         except:
             print("Error reading the config file.")
@@ -161,7 +174,8 @@ def vidSourcenOptions():
             vidSourcenOptions()
         elif newFcheck == True:
             print("Version :",versionInfo)
-            print("New Custom configuration (no need to change it manually at your home folder.)")
+            print("New Exit dialog and changed to use subprocess.run instead of os.system.")
+            #print("New Custom configuration (no need to change it manually at your home folder.)")
             vidSourcenOptions()
         elif resetConfFile == True:
             usrInput=input("are you sure? (y/n) : ")
@@ -266,7 +280,7 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
             #########
             else:
                 subprocess.run(["yt-dlp", "-f", formatList[0], link[0]])
-            exit()
+            endProram()
         else:
             # MORE THAN ONE VIDEOS DOWNLOADS
             for i in range(0, count):
@@ -283,7 +297,7 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
             #########
                 else:
                     print("yt-dlp -f "+formatList[n]+" "+link[n])
-            exit()
+            endProram()
 
     else:
         # MORE THAN ONE VIDEOS DOWNLOAD WITH THE SAME FORMAT
@@ -301,7 +315,7 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
             #########
             else:
                 subprocess.run(["yt-dlp", "-f", formatList[1], link[n]])
-        exit()
+        endProram()
 
 def dirPrinting(printType):
     if printType == 1:
@@ -319,12 +333,12 @@ def createConfig():
     usrInput = input("Do you want to use the default settings (y/n): ")
     if usrInput in yes:
         with open(absoluteHomeFolder+"/yt-dlp-helper.conf", "w+") as infile:
-            infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation, version\n###CONFIG START HERE###\nversion = 2.51\ncwd1 = True \ncwd2 = True \nformatp = True \nconfDebug = False \ndefaultLocation = 'None' ")
+            infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation, version, askExit\n###CONFIG START HERE###\nversion = 2.52\ncwd1 = True \ncwd2 = True \nformatp = True \nconfDebug = False \ndefaultLocation = 'None' \naskExit = True ")
         print("Config file created. Please relaunch the script.")
         exit()
     else:
         with open(absoluteHomeFolder+"/yt-dlp-helper.conf", "w+") as infile:
-            infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation, version\n###CONFIG START HERE###\nversion = 2.51\n")
+            infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation, version, askExit\n###CONFIG START HERE###\nversion = 2.52\n")
             print("Do you want to enable current working directory printing?")
             option1=input("(y/n) : ")
             if option1 in yes:
@@ -355,6 +369,17 @@ def createConfig():
                 infile.write("formatp = True\n")
             print("formatp configured.")
 
+            print("Do you want to enable Exit Dialog?")
+            option3=input("(y/n) : ")
+            if option3 in yes:
+                infile.write("askExit = True\n")
+            elif option3 in no:
+                infile.write("askExit = False\n")
+            else:
+                infile.write("askExit = True\n")
+            print("askExit configured.")
+
+
             print("Do you want to enable default location?")
             option4=input("(y/n) : ")
             if option4 in yes:
@@ -365,6 +390,16 @@ def createConfig():
             print("defaultLocation configured.")
             infile.write("confDebug = False")
         print("Done Creating configuration file. Please restart the script.")
+        exit()
+
+def endProram():
+    if askExitSettings == True :
+        usrInput = input("Do you want to exit? (y/n) : ")
+        if usrInput == "y":
+            exit()
+        else:
+            main()
+    else:
         exit()
 
 main()
