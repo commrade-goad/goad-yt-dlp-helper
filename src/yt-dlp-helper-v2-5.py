@@ -89,7 +89,7 @@ def readTheConfigFile():
     try:
         askExitSettings = askExit
     except:
-        print("WARING : Missing askExit variable. using the default value...")
+        print("Error reading the config file : Missing askExit variable. using the default value...")
         askExitSettings = 1
     if askExitSettings not in possiblePattern:
         print("askExit possible value is True(1) or False(0) not", askExit,"using the default value (1)")
@@ -280,7 +280,7 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
             #########
             else:
                 subprocess.run(["yt-dlp", "-f", formatList[0], link[0]])
-            endProram()
+            endProgram()
         else:
             # MORE THAN ONE VIDEOS DOWNLOADS
             for i in range(0, count):
@@ -297,7 +297,7 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
             #########
                 else:
                     print("yt-dlp -f "+formatList[n]+" "+link[n])
-            endProram()
+            endProgram()
 
     else:
         # MORE THAN ONE VIDEOS DOWNLOAD WITH THE SAME FORMAT
@@ -315,7 +315,7 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
             #########
             else:
                 subprocess.run(["yt-dlp", "-f", formatList[1], link[n]])
-        endProram()
+        endProgram()
 
 def dirPrinting(printType):
     if printType == 1:
@@ -379,7 +379,6 @@ def createConfig():
                 infile.write("askExit = True\n")
             print("askExit configured.")
 
-
             print("Do you want to enable default location?")
             option4=input("(y/n) : ")
             if option4 in yes:
@@ -392,7 +391,7 @@ def createConfig():
         print("Done Creating configuration file. Please restart the script.")
         exit()
 
-def endProram():
+def endProgram():
     if askExitSettings == True :
         usrInput = input("Do you want to exit? (y/n) : ")
         if usrInput == "y":
