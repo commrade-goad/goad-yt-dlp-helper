@@ -28,7 +28,7 @@ def main():
             print("sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && sudo chmod a+rx /usr/local/bin/yt-dlp")
             install=input("you will execute the  command from above, do you want to proceed? (y/n) : ")
             if install == "y":
-                os.system("sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && sudo chmod a+rx /usr/local/bin/yt-dlp")
+                subprocess.run(["sudo", "curl", "-L", "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp", "-o", "/usr/local/bin/yt-dlp", "&&", "sudo", "chmod", "a+rx", "/usr/local/bin/yt-dlp"])
                 main()
             else:
                 exit()
@@ -157,7 +157,7 @@ def vidSourcenOptions():
             exit()
         elif updatecheck == True:
             print(" > Running Command : sudo yt-dlp -U")
-            os.system("sudo yt-dlp -U")
+            subprocess.run(["sudo", "yt-dlp", "-U"])
             vidSourcenOptions()
         elif newFcheck == True:
             print("Version :",versionInfo)
@@ -171,7 +171,7 @@ def vidSourcenOptions():
                 exit()
             main()
         elif reDownytdlp == True :
-            os.system("sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && sudo chmod a+rx /usr/local/bin/yt-dlp")
+            subprocess.run(["sudo", "curl", "-L", "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp", "-o", "/usr/local/bin/yt-dlp", "&&", "sudo", "chmod", "a+rx", "/usr/local/bin/yt-dlp"])
             main()
         elif manualDir == True:
             if checkDefaultLocation == False:
@@ -216,7 +216,7 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
             n += 1
             vidNumber = vidNumber+1
             print(" > Format of Video no",vidNumber)
-            os.system("yt-dlp -F "+link[n])
+            subprocess.run(["yt-dlp", "-F", link[n]])
     else:
         pass
     if cwd2Settings == True:
@@ -258,14 +258,14 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
             print(" > Downloading Video no",vidNumber)
             ## NEW ##
             if formatList[0] == "HD":
-                os.system("yt-dlp -f 136+140 "+link[0])
+                subprocess.run(["yt-dlp", "-f", "136+140",link[0]])
             elif formatList[0] == "FHD":
-                os.system("yt-dlp -f 137+140 "+link[0])
+                subprocess.run(["yt-dlp", "-f", "137+140", link[0]])
             elif formatList[0] == "small":
-                os.system("yt-dlp -f 135+140 "+link[0])
+                subprocess.run(["yt-dlp", "-f", "135+140", link[0]])
             #########
             else:
-                os.system("yt-dlp -f "+formatList[0]+" "+link[0])
+                subprocess.run(["yt-dlp", "-f", formatList[0], link[0]])
             exit()
         else:
             # MORE THAN ONE VIDEOS DOWNLOADS
@@ -275,11 +275,11 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
                 print(" > Downloading Video no",vidNumber)
                 ## NEW ##
                 if formatList[n] == "HD":
-                    os.system("yt-dlp -f 136+140 "+link[n])
+                    subprocess.run(["yt-dlp", "-f", "136+140 ", link[n]])
                 elif formatList[n] == "FHD":
-                    os.system("yt-dlp -f 137+140 "+link[n])
+                    subprocess.run(["yt-dlp", "-f", "137+140 ", link[n]])
                 elif formatList[0] == "small":
-                    os.system("yt-dlp -f 135+140 "+link[n])
+                    subprocess.run(["yt-dlp", "-f", "135+140 ", link[n]])
             #########
                 else:
                     print("yt-dlp -f "+formatList[n]+" "+link[n])
@@ -293,14 +293,14 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
             print(" > Downloading Video no",vidNumber)
             ## NEW ##
             if formatList[1] == "HD":
-                os.system("yt-dlp -f 136+140 "+link[n])
+                subprocess.run(["yt-dlp", "-f", "136+140", link[n]])
             elif formatList[1] == "FHD":
-                os.system("yt-dlp -f 137+140 "+link[n])
+                subprocess.run(["yt-dlp", "-f", "137+140", link[n]])
             elif formatList[0] == "small":
-                os.system("yt-dlp -f 135+140 "+link[n])
+                subprocess.run(["yt-dlp", "-f", "135+140", link[n]])
             #########
             else:
-                os.system("yt-dlp -f "+formatList[1]+" "+link[n])
+                subprocess.run(["yt-dlp", "-f", formatList[1], link[n]])
         exit()
 
 def dirPrinting(printType):
