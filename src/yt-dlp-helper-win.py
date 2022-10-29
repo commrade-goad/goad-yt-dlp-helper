@@ -353,6 +353,7 @@ def createConfig():
             print("Do you want to enable default location?")
             option4=input("(y/n) : ")
             if option4 in yes:
+                print("NOTE : use '\\\\' instead of '\\'\nExample: C:\\\\users\\\\user")
                 option5 = input("Type the default save location here : ")
                 infile.write("defaultLocation = '"+option5+"'\n")
             else:
