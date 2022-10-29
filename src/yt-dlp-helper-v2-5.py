@@ -296,7 +296,7 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
                     subprocess.run(["yt-dlp", "-f", "135+140 ", link[n]])
             #########
                 else:
-                    subprocess.run(["yt-dlp"], ["-f"], formatList[n], link[n])
+                    subprocess.run(["yt-dlp", "-f", formatList[n], link[n]])
             endProgram()
 
     else:
