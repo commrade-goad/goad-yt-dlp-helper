@@ -137,7 +137,7 @@ def vidSourcenOptions():
             print("confDebugSettings =",confDebugSettings)
             print("defaultLocationSettings = '"+defaultLocationSettings+"'")
             print("checkDefaultLocation =",checkDefaultLocation)
-            print("askExitSettigns =", askExitSettings)
+            print("askExitSettings =", askExitSettings)
             print("==============================================")
         except:
             print("Error reading the config file.")
@@ -292,11 +292,11 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
                     subprocess.run(["yt-dlp", "-f", "136+140 ", link[n]])
                 elif formatList[n] == "FHD":
                     subprocess.run(["yt-dlp", "-f", "137+140 ", link[n]])
-                elif formatList[0] == "small":
+                elif formatList[n] == "small":
                     subprocess.run(["yt-dlp", "-f", "135+140 ", link[n]])
             #########
                 else:
-                    print("yt-dlp -f "+formatList[n]+" "+link[n])
+                    subprocess.run(["yt-dlp"], ["-f"], formatList[n], link[n])
             endProgram()
 
     else:
@@ -310,7 +310,7 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
                 subprocess.run(["yt-dlp", "-f", "136+140", link[n]])
             elif formatList[1] == "FHD":
                 subprocess.run(["yt-dlp", "-f", "137+140", link[n]])
-            elif formatList[0] == "small":
+            elif formatList[1] == "small":
                 subprocess.run(["yt-dlp", "-f", "135+140", link[n]])
             #########
             else:
