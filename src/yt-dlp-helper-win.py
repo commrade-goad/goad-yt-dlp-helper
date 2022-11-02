@@ -179,6 +179,7 @@ def vidSourcenOptions():
 
 def whereToSave():
     if checkDefaultLocation == False:
+        print("NOTE : use '\\\\' instead of '\\'\nExample: C:\\\\users\\\\user")
         where=str(input("Path : "))
         dircheck=os.path.isdir(where)
         if dircheck == False:
