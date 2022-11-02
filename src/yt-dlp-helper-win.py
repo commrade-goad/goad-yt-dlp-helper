@@ -1,13 +1,12 @@
 from urllib.parse import urlparse
 import os
 print("================================")
-print("  yt-dlp-helper windows V2.5.2  ")
+print("  yt-dlp-helper windows V2.5.3  ")
 print("================================")
 print("Options: 'exit' 'new' 'rconf' 'md'")
 absoluteHomeFolder = os.path.expanduser("~")
 
 def main():
-    print("NOTE : There is no yt-dlp checking on windows version.")
     checkconf = os.path.isfile(absoluteHomeFolder+"\\yt-dlp-helper.conf")
     if checkconf == True :
         readTheConfigFile()
@@ -18,7 +17,7 @@ def main():
         vidSourcenOptions()
 
 def readTheConfigFile():
-    global possiblePattern, cwd1Settings, cwd2Settings, formatpSettings, confDebugSettings, defaultLocationSettings, checkDefaultLocation, versionInfo, askExitSettings
+    global possiblePattern, cwd1Settings, cwd2Settings, formatpSettings, confDebugSettings, defaultLocationSettings, checkDefaultLocation, versionInfo, askExitSettings, ytdlpPathSettings
     possiblePattern = [True, False]
 
     try:
@@ -36,7 +35,7 @@ def readTheConfigFile():
     ## VERSION ##
     try:
         versionInfo = version
-        if versionInfo < 2.52:
+        if versionInfo < 2.53:
             print("You are using the old config file '",versionInfo,"'. Please update the config file using 'rconf' option.")
     except:
         versionInfo = "Unknown"
@@ -46,6 +45,22 @@ def readTheConfigFile():
         confDebugSettings = confDebug
     except:
         confDebugSettings = False
+
+    ## yt-dlp path ##
+    try:
+        ytdlpPathSettings = 'None'
+        ytdlpPathSettings = ytdlpPath
+        exeCheck = os.path.isfile(ytdlpPathSettings)
+        if exeCheck == False:
+            if ytdlpPathSettings != 'None':
+                print("ERROR : The executable at ", ytdlpPathSettings, "doesnt exist!")
+                print("Please update to the right path from the config file or do 'rconf'.")
+            else:
+                ytdlpPathSettings = 'yt-dlp'
+    except:
+        print("ERROR : Can't detect the yt-dlp.exe path!")
+        print("Possible fix(1) : do the 'rconf' options in source/options.")
+        print("Possible fix(2) : update yt-dlp-helper.conf to include the yt-dlp.exe right path.")
 
     ## default location ##
     defaultLocationSettings = "None"
@@ -120,6 +135,7 @@ def vidSourcenOptions():
             print("defaultLocationSettings = '"+defaultLocationSettings+"'")
             print("checkDefaultLocation =",checkDefaultLocation)
             print("askExitSettigns =", askExitSettings)
+            print("ytdlpPathSettings = '"+ ytdlpPathSettings+"'")
             print("==============================================")
         except:
             print("Error reading the config file.")
@@ -179,7 +195,6 @@ def vidSourcenOptions():
 
 def whereToSave():
     if checkDefaultLocation == False:
-        print("NOTE : use '\\\\' instead of '\\'\nExample: C:\\\\users\\\\user")
         where=str(input("Path : "))
         dircheck=os.path.isdir(where)
         if dircheck == False:
@@ -202,7 +217,7 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
             n += 1
             vidNumber = vidNumber+1
             print(" > Format of Video no",vidNumber)
-            os.system("yt-dlp -F "+ link[n])
+            os.system(ytdlpPathSettings+" -F "+ link[n])
     else:
         pass
     if cwd2Settings == True:
@@ -244,14 +259,14 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
             print(" > Downloading Video no",vidNumber)
             ## NEW ##
             if formatList[0] == "HD":
-                os.system("yt-dlp -f 136+140 "+link[0])
+                os.system(ytdlpPathSettings+" -f 136+140 "+link[0])
             elif formatList[0] == "FHD":
-                os.system("yt-dlp -f 137+140 "+ link[0])
+                os.system(ytdlpPathSettings+" -f 137+140 "+ link[0])
             elif formatList[0] == "small":
-                os.system("yt-dlp -f 135+140 "+ link[0])
+                os.system(ytdlpPathSettings+" -f 135+140 "+ link[0])
             #########
             else:
-                os.system("yt-dlp -f "+ formatList[0]+" " + link[0])
+                os.system(ytdlpPathSettings+" -f "+ formatList[0]+" " + link[0])
             endProgram()
         else:
             # MORE THAN ONE VIDEOS DOWNLOADS
@@ -261,14 +276,14 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
                 print(" > Downloading Video no",vidNumber)
                 ## NEW ##
                 if formatList[n] == "HD":
-                    os.system("yt-dlp -f 136+140 "+link[n])
+                    os.system(ytdlpPathSettings+" -f 136+140 "+link[n])
                 elif formatList[n] == "FHD":
-                    os.system("yt-dlp -f 137+140 "+link[n])
+                    os.system(ytdlpPathSettings+" -f 137+140 "+link[n])
                 elif formatList[n] == "small":
-                    os.system("yt-dlp -f 135+140 "+ link[n])
+                    os.system(ytdlpPathSettings+" -f 135+140 "+ link[n])
             #########
                 else:
-                    os.system("yt-dlp -f "+formatList[n]+" "+link[n])
+                    os.system(ytdlpPathSettings+" -f "+formatList[n]+" "+link[n])
             endProgram()
 
     else:
@@ -279,14 +294,14 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
             print(" > Downloading Video no",vidNumber)
             ## NEW ##
             if formatList[1] == "HD":
-                os.system("yt-dlp -f 136+140 "+link[n])
+                os.system(ytdlpPathSettings+" -f 136+140 "+link[n])
             elif formatList[1] == "FHD":
-                os.system("yt-dlp -f 137+140 " + link[n])
+                os.system(ytdlpPathSettings+" -f 137+140 " + link[n])
             elif formatList[1] == "small":
-                os.system("yt-dlp -f 135+140 "+ link[n])
+                os.system(ytdlpPathSettings+" -f 135+140 "+ link[n])
             #########
             else:
-                os.system("yt-dlp -f" + formatList[1]+" " + link[n])
+                os.system(ytdlpPathSettings+" -f" + formatList[1]+" " + link[n])
         endProgram()
 
 def dirPrinting(printType):
@@ -305,12 +320,22 @@ def createConfig():
     usrInput = input("Do you want to use the default settings (y/n): ")
     if usrInput in yes:
         with open(absoluteHomeFolder+"\\yt-dlp-helper.conf", "w+") as infile:
-            infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation, version, askExit\n###CONFIG START HERE###\nversion = 2.52\ncwd1 = True \ncwd2 = True \nformatp = True \nconfDebug = False \ndefaultLocation = 'None' \naskExit = True ")
+            infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation, version, askExit, ytdlpPath\n###CONFIG START HERE###\nversion = 2.53\ncwd1 = True \ncwd2 = True \nformatp = True \nconfDebug = False \ndefaultLocation = 'None' \naskExit = True \nytdlpPath = 'None' ")
         print("Config file created. Please relaunch the script.")
         exit()
     else:
         with open(absoluteHomeFolder+"\\yt-dlp-helper.conf", "w+") as infile:
-            infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation, version, askExit\n###CONFIG START HERE###\nversion = 2.52\n")
+            infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation, version, askExit, ytdlpPath\n###CONFIG START HERE###\nversion = 2.53\n")
+            print("Do you want to specify yt-dlp directory ?")
+            option0=input("(y/n) : ")
+            if option0 in yes:
+                print("NOTE : use '\\\\' instead of '\\'\nExample: C:\\\\users\\\\user")
+                option01 = input("Type the executable location here : ")
+                infile.write("ytdlpPath = '"+option01+"'\n")
+            else:
+                infile.write("ytdlpPath = 'None'\n")
+            print("ytdlpPath configured.")
+            
             print("Do you want to enable current working directory printing?")
             option1=input("(y/n) : ")
             if option1 in yes:
