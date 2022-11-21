@@ -301,7 +301,7 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
                 os.system(ytdlpPathSettings+" -f 135+140 "+ link[n])
             #########
             else:
-                os.system(ytdlpPathSettings+" -f" + formatList[1]+" " + link[n])
+                os.system(ytdlpPathSettings+" -f " + formatList[1]+" " + link[n])
         endProgram()
 
 def dirPrinting(printType):
