@@ -264,6 +264,10 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
                 os.system(ytdlpPathSettings+" -f 137+140 "+ link[0])
             elif formatList[0] == "small":
                 os.system(ytdlpPathSettings+" -f 135+140 "+ link[0])
+            elif formatList[0] == "webmHD":
+                os.system(ytdlpPathSettings+" -f 247+251 "+ link[0])
+            elif formatList[0] == "webmFHD":
+                os.system(ytdlpPathSettings+" -f 248+251 "+ link[0])
             #########
             else:
                 os.system(ytdlpPathSettings+" -f "+ formatList[0]+" " + link[0])
@@ -281,6 +285,11 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
                     os.system(ytdlpPathSettings+" -f 137+140 "+link[n])
                 elif formatList[n] == "small":
                     os.system(ytdlpPathSettings+" -f 135+140 "+ link[n])
+                elif formatList[n] == "webmHD":
+                    os.system(ytdlpPathSettings+" -f 247+251 "+ link[n])
+                elif formatList[n] == "webmFHD":
+                    os.system(ytdlpPathSettings+" -f 248+251 "+ link[n])
+
             #########
                 else:
                     os.system(ytdlpPathSettings+" -f "+formatList[n]+" "+link[n])
@@ -299,6 +308,10 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
                 os.system(ytdlpPathSettings+" -f 137+140 " + link[n])
             elif formatList[1] == "small":
                 os.system(ytdlpPathSettings+" -f 135+140 "+ link[n])
+            elif formatList[1] == "webmHD":
+                os.system(ytdlpPathSettings+" -f 247+251 "+ link[n])
+            elif formatList[1] == "webmFHD":
+                os.system(ytdlpPathSettings+" -f 248+251 "+ link[n])
             #########
             else:
                 os.system(ytdlpPathSettings+" -f " + formatList[1]+" " + link[n])

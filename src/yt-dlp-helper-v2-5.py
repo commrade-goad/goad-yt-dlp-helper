@@ -2,7 +2,7 @@ from urllib.parse import urlparse
 import subprocess
 import os
 print("================================")
-print("  yt-dlp-helper by Goad V2.5.2  ")
+print("  yt-dlp-helper by Goad V2.5.3  ")
 print("================================")
 print("Options: 'exit' 'update' 'new' 'rconf' 'rdown' 'md'")
 absoluteHomeFolder = os.path.expanduser("~")
@@ -174,7 +174,8 @@ def vidSourcenOptions():
             vidSourcenOptions()
         elif newFcheck == True:
             print("Version :",versionInfo)
-            print("New Exit dialog and changed to use subprocess.run instead of os.system.")
+            print("New webm format preset [webmHD], [webmFHD].")
+            #print("New Exit dialog and changed to use subprocess.run instead of os.system.")
             #print("New Custom configuration (no need to change it manually at your home folder.)")
             vidSourcenOptions()
         elif resetConfFile == True:
@@ -243,7 +244,7 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
     else:
         pass
     ## NEW ##
-    print("Preset : 'HD' for 720p(136+140), 'FHD' for 1080p(137+140), 'small' for 480p(135+140)")
+    print("Preset : 'HD' for 720p(136+140), 'FHD' for 1080p(137+140), 'small' for 480p(135+140), 'webmHD', 'webmFHD' for webm format")
     #########
     for i in range(0, count):
         vidNumber = vidNumber+1
@@ -277,6 +278,10 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
                 subprocess.run(["yt-dlp", "-f", "137+140", link[0]])
             elif formatList[0] == "small":
                 subprocess.run(["yt-dlp", "-f", "135+140", link[0]])
+            elif formatList[0] == "webmHD":
+                subprocess.run(["yt-dlp", "-f", "247+251", link[0]])
+            elif formatList[0] == "webmFHD":
+                subprocess.run(["yt-dlp", "-f", "248+251", link[0]])
             #########
             else:
                 subprocess.run(["yt-dlp", "-f", formatList[0], link[0]])
@@ -294,6 +299,10 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
                     subprocess.run(["yt-dlp", "-f", "137+140 ", link[n]])
                 elif formatList[n] == "small":
                     subprocess.run(["yt-dlp", "-f", "135+140 ", link[n]])
+                elif formatList[n] == "webmHD":
+                    subprocess.run(["yt-dlp", "-f", "247+251", link[n]])
+                elif formatList[n] == "webmFHD":
+                    subprocess.run(["yt-dlp", "-f", "248+251", link[n]])
             #########
                 else:
                     subprocess.run(["yt-dlp", "-f", formatList[n], link[n]])
@@ -312,6 +321,10 @@ def ytdlpCommand(): #sf bug is caused because i call the function again.
                 subprocess.run(["yt-dlp", "-f", "137+140", link[n]])
             elif formatList[1] == "small":
                 subprocess.run(["yt-dlp", "-f", "135+140", link[n]])
+            elif formatList[1] == "webmHD":
+                subprocess.run(["yt-dlp", "-f", "247+251", link[n]])
+            elif formatList[1] == "webmFHD":
+                subprocess.run(["yt-dlp", "-f", "248+251", link[n]])
             #########
             else:
                 subprocess.run(["yt-dlp", "-f", formatList[1], link[n]])
