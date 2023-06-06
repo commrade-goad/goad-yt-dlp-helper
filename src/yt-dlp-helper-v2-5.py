@@ -2,7 +2,7 @@ from urllib.parse import urlparse
 import subprocess
 import os
 print("================================")
-print("  yt-dlp-helper by Goad V2.5.2  ")
+print("  yt-dlp-helper by Goad V2.5.3  ")
 print("================================")
 print("Options: 'exit' 'update' 'new' 'rconf' 'rdown' 'md'")
 absoluteHomeFolder = os.path.expanduser("~")
@@ -12,15 +12,21 @@ def main():
     check2 = os.path.isfile("/usr/bin/yt-dlp")
     if check1 or check2 == True:
         check = True
-        checkconf = os.path.isfile(absoluteHomeFolder+"/yt-dlp-helper.conf")
+        path_legacy = absoluteHomeFolder+"/yt-dlp-helper.conf"
+        path_new = absoluteHomeFolder+"/.config/yt-dlp-helper.conf"
+        checkconf_legacy = os.path.isfile(path_legacy)
+        checkconf = os.path.isfile(path_new)
     else:
         check = False
 
     if check == True:
-        if checkconf == False:
-            createConfig()
-        readTheConfigFile()
-        vidSourcenOptions()
+        if checkconf_legacy == False and checkconf == False :
+            createConfig(path_new)
+        conf_path = path_new
+        if checkconf == False and checkconf_legacy == True :
+            conf_path = path_legacy
+        readTheConfigFile(conf_path)
+        vidSourcenOptions(conf_path)
     else:
         print("You may install it from your distro packages manager too.")
         install=input("yt-dlp is not installed. Do you want to install it? (y/n) : ")
@@ -35,30 +41,30 @@ def main():
         else:
             exit()
 
-def readTheConfigFile():
+def readTheConfigFile(path_to_conf):
     global possiblePattern, cwd1Settings, cwd2Settings, formatpSettings, confDebugSettings, defaultLocationSettings, checkDefaultLocation, versionInfo, askExitSettings
     possiblePattern = [True, False]
 
     try:
-        with open(absoluteHomeFolder+"/yt-dlp-helper.conf") as infile:
+        with open(path_to_conf) as infile:
             exec(infile.read())
     except:
         print("Error reading the config file : invalid config.")
         askUser = input("Do you want to recreate the config file? (y/n) : ")
         if askUser == "y":
             print("Recreating the config file...")
-            os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
+            os.remove(path_to_conf)
             main()
         else:
             exit()
     ## VERSION ##
     try:
         versionInfo = version
-        if versionInfo < 2.52:
-            print("You are using the old config file '",versionInfo,"'. Please update the config file using 'rconf' option.")
+        if versionInfo < 2.53:
+            print("You are using the old config file '",versionInfo,"'. Please update the config file using 'rconf' option if there is any problem.")
     except:
         versionInfo = "Unknown"
-        print("You are using the old config file '",versionInfo,"'. Please update the config file using 'rconf' option.")
+        print("You are using the old config file '",versionInfo,"'. Please update the config file using 'rconf' option if there is any problem.")
     ## debug ##
     try:
         confDebugSettings = confDebug
@@ -107,7 +113,7 @@ def readTheConfigFile():
         askUser = input("Do you want to recreate the config file? (y/n) : ")
         if askUser == "y":
             print("Recreating the config file...")
-            os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
+            os.remove(path_to_conf)
             main()
         else:
             exit()
@@ -122,7 +128,7 @@ def readTheConfigFile():
         print("formatp possible value is True(1) or False(0) not",formatp,"using the default value (1)")
         formatpSettings = True
 
-def vidSourcenOptions():
+def vidSourcenOptions(path_to_conf):
     global link, count, checkDefaultLocation
 
     ## NEW ##
@@ -171,17 +177,18 @@ def vidSourcenOptions():
         elif updatecheck == True:
             print(" > Running Command : sudo yt-dlp -U")
             subprocess.run(["sudo", "yt-dlp", "-U"])
-            vidSourcenOptions()
+            vidSourcenOptions(path_to_conf)
         elif newFcheck == True:
             print("Version :",versionInfo)
-            print("New webm format preset [webmHD], [webmFHD].")
+            print("Now $HOME/.config/ is the default config dir. $HOME still working but now $HOME/.config is prefered")
+            # print("New webm format preset [webmHD], [webmFHD].")
             #print("New Exit dialog and changed to use subprocess.run instead of os.system.")
             #print("New Custom configuration (no need to change it manually at your home folder.)")
-            vidSourcenOptions()
+            vidSourcenOptions(path_to_conf)
         elif resetConfFile == True:
             usrInput=input("are you sure? (y/n) : ")
             if usrInput == "y":
-                os.remove(absoluteHomeFolder+"/yt-dlp-helper.conf")
+                os.remove(path_to_conf)
             else:
                 exit()
             main()
@@ -191,14 +198,14 @@ def vidSourcenOptions():
         elif manualDir == True:
             if checkDefaultLocation == False:
                 print("Already using manual directory!")
-                vidSourcenOptions()
+                vidSourcenOptions(path_to_conf)
             else:
                 checkDefaultLocation = False
                 print("Changed to manual directory.")
-                vidSourcenOptions()
+                vidSourcenOptions(path_to_conf)
         else:
             print("Not a valid url or commands!")
-            vidSourcenOptions()
+            vidSourcenOptions(path_to_conf)
     else:
         if cwd1Settings == True:
             dirPrinting(1)
@@ -339,19 +346,19 @@ def dirPrinting(printType):
     else:
         print("The File will be saved at '"+os.getcwd()+"'")
 
-def createConfig():
+def createConfig(path_to_conf):
     print(" > Configure Configuration file")
     yes=["Y", "y"]
     no=["n", "N"]
     usrInput = input("Do you want to use the default settings (y/n): ")
     if usrInput in yes:
-        with open(absoluteHomeFolder+"/yt-dlp-helper.conf", "w+") as infile:
-            infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation, version, askExit\n###CONFIG START HERE###\nversion = 2.52\ncwd1 = True \ncwd2 = True \nformatp = True \nconfDebug = False \ndefaultLocation = 'None' \naskExit = True ")
+        with open(path_to_conf, "w+") as infile:
+            infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation, version, askExit\n###CONFIG START HERE###\nversion = 2.53\ncwd1 = True \ncwd2 = True \nformatp = True \nconfDebug = False \ndefaultLocation = 'None' \naskExit = True ")
         print("Config file created. Please relaunch the script.")
         exit()
     else:
-        with open(absoluteHomeFolder+"/yt-dlp-helper.conf", "w+") as infile:
-            infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation, version, askExit\n###CONFIG START HERE###\nversion = 2.52\n")
+        with open(path_to_conf, "w+") as infile:
+            infile.write("global cwd1, cwd2, formatp, confDebug, defaultLocation, version, askExit\n###CONFIG START HERE###\nversion = 2.53\n")
             print("Do you want to enable current working directory printing?")
             option1=input("(y/n) : ")
             if option1 in yes:
